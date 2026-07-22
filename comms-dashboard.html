@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Comms Team · Weekly Reporting</title>
+<style>
+  :root {
+    /* ── Fetch design tokens (ported from fetch-ds/globals.css) ── */
+    --ink-0: #050505;
+    --ink-1: #1b1b1c;
+    --ink-2: #3a3a3c;
+    --ink-muted: #5e5e5e;
+
+    --neutral-0: #ffffff;
+    --neutral-50: #faf7ef;
+    --neutral-100: #f2ede0;
+    --neutral-150: #e8e2d1;
+    --neutral-200: #dcd4bf;
+    --neutral-300: #c2b99f;
+
+    --pink: #fda5ff;
+    --pink-soft: #fec9ff;
+    --pink-ink: #b7468d;
+
+    --green-ink: #008a20;
+    --green-soft: #dff3da;
+    --green-pastel: #82c98a;
+
+    --orange: #ff9d0d;
+    --orange-soft: #ffe7c2;
+    --orange-ink: #c45500;
+    --orange-pastel: #ffb673;
+
+    --purple-pastel: #ada6f2;
+
+    --background: var(--neutral-50);
+    --surface: var(--neutral-0);
+    --surface-muted: var(--neutral-100);
+    --foreground: var(--ink-1);
+    --muted: var(--ink-muted);
+    --muted-strong: var(--ink-2);
+    --border: var(--neutral-150);
+    --border-subtle: color-mix(in oklab, var(--neutral-200) 45%, transparent);
+    --success: var(--green-ink);
+    --success-soft: var(--green-soft);
+    --warning: var(--orange-pastel);
+    --warning-soft: var(--orange-soft);
+    --accent: var(--pink-ink);
+
+    --radius-lg: 0.875rem;
+    --radius-sm: 0.5rem;
+    --radius-full: 9999px;
+    --shadow-sm: 0 1px 2px rgba(5, 5, 5, 0.05), 0 1px 0 rgba(5, 5, 5, 0.02);
+
+    --page-bg: var(--neutral-0);
+    --box-bg: color-mix(in oklab, var(--pink-soft) 40%, var(--neutral-0));
+    --box-bg-strong: color-mix(in oklab, var(--pink-soft) 65%, var(--neutral-0));
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    margin: 0 0 8px;
+  }
+
+  .description {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .card {
+    background: var(--box-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+  }
+
+  .grid {
+    display: grid;
+    gap: 16px;
+  }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .grid-4 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .mt-4 { margin-top: 16px; }
+  .mt-6 { margin-top: 24px; }
+  .mt-8 { margin-top: 32px; }
+
+  .stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  .stat-value {
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  .delta.good { color: var(--success); }
+  .delta.bad { color: var(--warning); }
+
+  h3.section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+
+  .section-card {
+    background: var(--box-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .section-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .section-row:last-child { border-bottom: none; }
+  .section-row .label { font-size: 0.9rem; font-weight: 500; }
+  .section-row .value { font-size: 0.8rem; color: var(--muted); line-height: 1.4; margin-top: 3px; }
+  .section-row .amount { font-size: 0.9rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .section-row > div:first-child { flex: 1; min-width: 0; padding-right: 16px; }
+  .section-row > .pill, .section-row > .amount { flex-shrink: 0; }
+  .section-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--box-bg-strong);
+    font-weight: 600;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .pill::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .pill.accent { background: color-mix(in oklab, var(--pink) 25%, white); color: var(--pink-ink); }
+  .pill.success { background: var(--success-soft); color: var(--success); }
+  .pill.warning { background: var(--warning-soft); color: var(--warning); }
+  .pill.muted { background: var(--surface-muted); color: var(--muted-strong); }
+
+  .bar-track {
+    height: 8px;
+    width: 100%;
+    background: var(--neutral-150);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; border-radius: var(--radius-full); }
+
+  .insight {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .volume-bar { }
+  .volume-bar-label { pointer-events: none; font-weight: 600; }
+
+  table {
+    width: 100%;
+    min-width: 900px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    background: var(--box-bg);
+  }
+  thead tr { background: var(--box-bg-strong); border-bottom: 1px solid var(--border); }
+  th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    word-wrap: break-word;
+  }
+  th.right, td.right { text-align: right; }
+  td {
+    padding: 10px 12px;
+    border-top: 1px solid var(--border-subtle);
+    font-variant-numeric: tabular-nums;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    vertical-align: top;
+  }
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+  }
+
+  .flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .section-banner {
+    background: var(--box-bg-strong);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  svg text { font-family: inherit; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="eyebrow">Comms Team</div>
+    <h1>Weekly Reporting</h1>
+    <p class="description" id="header-range">sourced from Intercom conversations</p>
+
+    <!-- KPI row: volume -->
+    <div class="grid grid-3 mt-8">
+      <div class="card">
+        <p class="stat-label">Comms Chats Handled</p>
+        <p class="stat-value" id="kpi-chats"></p>
+        <p class="stat-hint" id="kpi-chats-delta"></p>
+      </div>
+      <div class="card">
+        <p class="stat-label">Histories Handled</p>
+        <p class="stat-value" id="kpi-historys"></p>
+        <p class="stat-hint" id="kpi-historys-delta"></p>
+      </div>
+      <div class="card">
+        <p class="stat-label">Cancellation Chats Handled</p>
+        <p class="stat-value" id="kpi-cancellation-chats"></p>
+        <p class="stat-hint" id="kpi-cancellation-chats-delta"></p>
+      </div>
+    </div>
+
+    <!-- KPI row: quality & retention -->
+    <div class="grid grid-3 mt-4">
+      <div class="card">
+        <p class="stat-label">CSAT</p>
+        <p class="stat-value" id="kpi-csat"></p>
+        <p class="stat-hint flex-between">
+          <span id="kpi-csat-delta"></span>
+          <span id="kpi-csat-responses" style="color:var(--muted)"></span>
+        </p>
+      </div>
+      <div class="card">
+        <p class="stat-label">Median FRT</p>
+        <p class="stat-value" id="kpi-frt"></p>
+        <p class="stat-hint" id="kpi-frt-delta"></p>
+      </div>
+      <div class="card">
+        <p class="stat-label">Retention</p>
+        <p class="stat-value" id="kpi-retention"></p>
+        <p class="stat-hint" id="kpi-retention-delta"></p>
+      </div>
+    </div>
+
+    <!-- Volume by inbox: breakdown table sits above its bar graph -->
+    <div class="mt-8">
+      <h3 class="section-title">Volume by inbox</h3>
+      <div class="section-card">
+        <div class="section-row">
+          <div><div class="label">Comms</div></div>
+          <div class="amount" id="vol-comms"></div>
+        </div>
+        <div class="section-row">
+          <div><div class="label">History &amp; Invoices</div></div>
+          <div class="amount" id="vol-history"></div>
+        </div>
+        <div class="section-row">
+          <div><div class="label">Cancellation Chats</div></div>
+          <div class="amount" id="vol-cancellation"></div>
+        </div>
+        <div class="section-total">
+          <span>Total conversations</span>
+          <span id="vol-total"></span>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span class="legend">
+            <span class="legend-item"><span class="legend-dot" style="background:var(--orange-pastel)"></span>Comms</span>
+            <span class="legend-item"><span class="legend-dot" style="background:var(--green-pastel)"></span>History &amp; Invoices</span>
+            <span class="legend-item"><span class="legend-dot" style="background:var(--purple-pastel)"></span>Cancellation Chats</span>
+          </span>
+        </div>
+        <svg id="volume-chart" viewBox="0 0 560 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+      </div>
+    </div>
+
+    <!-- CSAT trend -->
+    <div class="mt-4">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span style="font-size:0.9rem;font-weight:500;">CSAT trend</span>
+          <span class="legend">
+            <span class="legend-item"><span class="legend-dot" style="background:var(--pink-ink)"></span>CSAT %</span>
+          </span>
+        </div>
+        <svg id="csat-chart" viewBox="0 0 560 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+      </div>
+    </div>
+
+    <!-- Cancellations & Retentions -->
+    <div class="section-banner mt-8">Cancellations &amp; Retentions</div>
+
+    <div class="grid grid-2 mt-4">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span style="font-size:0.9rem;font-weight:500;">Retention trend</span>
+          <span class="legend">
+            <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>Retention %</span>
+          </span>
+        </div>
+        <svg id="retention-chart" viewBox="0 0 560 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+      </div>
+
+      <div>
+        <h3 class="section-title">Retention outcomes</h3>
+        <div class="section-card">
+          <div class="section-row">
+            <div><div class="label"># of customer's retained</div><div class="value" id="ret-retained-reasons"></div></div>
+            <span class="pill success" id="ret-retained"></span>
+          </div>
+          <div class="section-row">
+            <div><div class="label"># of cancellation requests</div></div>
+            <span class="pill warning" id="ret-cancelled"></span>
+          </div>
+          <div class="section-row">
+            <div><div class="label"># of Non-retainable</div><div class="value" id="ret-nonretainable-reasons"></div></div>
+            <span class="pill muted" id="ret-nonretainable"></span>
+          </div>
+          <div class="section-total">
+            <span>Total</span>
+            <span id="ret-total"></span>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="flex-between" style="margin-bottom:12px;">
+            <span style="font-size:0.9rem;font-weight:500;">Retention rate</span>
+            <span style="font-size:0.9rem;font-weight:600;" class="tabular-nums" id="ret-rate"></span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="ret-bar" style="background:var(--warning);"></div></div>
+          <p class="insight" id="ret-insight"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trend table -->
+    <div class="mt-4">
+      <h3 class="section-title">4-week trend</h3>
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col style="width:8%">
+            <col style="width:8%">
+            <col style="width:9%">
+            <col style="width:7%">
+            <col style="width:8%">
+            <col style="width:8%">
+            <col style="width:26%">
+            <col style="width:26%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Week of</th>
+              <th class="right">Comms Chats</th>
+              <th class="right">History &amp; Invoices</th>
+              <th class="right">CSAT</th>
+              <th class="right">Median FRT</th>
+              <th class="right">Retention</th>
+              <th>Retained Reasons</th>
+              <th>Non-retainable Reasons</th>
+            </tr>
+          </thead>
+          <tbody id="trend-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Real weekly_metrics rows pulled from the published "Comms Reporting" Hex app
+  // (app.hex.tech/.../Comms-Reporting-033t6UAWlbcmAP05m6dg5a), 4-week window
+  // ending 2026-07-19. chatsHandled/csatPct/medianFrtMin are Comms-inbox only;
+  // historys is a separate History & Invoices volume count; retention spans
+  // both inboxes (any chat closed that week with a Retained/Cancellation tag).
+  const WEEKS = [
+    {
+      weekStarting: "2026-06-22", chatsHandled: 443, cancellationChats: 99, historys: 1046, csatPct: 93.9, csatResponses: 49, medianFrtMin: 5.4,
+      retained: 25, cancelled: 57, nonRetainable: 17, retentionPct: 30.5,
+      retainedReasons: "Retained free month (11), Retained agent explanation (4), Retained cover adjustment (4), Retained product (3), Retained delayed cover (2)",
+      nonRetainableReasons: "No longer have pet (8), Personal situation (4), Pet passed away (3)",
+    },
+    {
+      weekStarting: "2026-06-29", chatsHandled: 446, cancellationChats: 108, historys: 935, csatPct: 98.0, csatResponses: 51, medianFrtMin: 6.2,
+      retained: 28, cancelled: 60, nonRetainable: 16, retentionPct: 31.8,
+      retainedReasons: "Retained free month (9), Retained agent explanation (7), Retained delayed cover (5), Retained price freeze (3), Retained cover adjustment (3), Retained payment plan (1)",
+      nonRetainableReasons: "No longer have pet (6), Personal situation (4), Didn't mean to sign up (4), Overseas (1), Pet passed away (1)",
+    },
+    {
+      weekStarting: "2026-07-06", chatsHandled: 483, cancellationChats: 115, historys: 1042, csatPct: 96.0, csatResponses: 75, medianFrtMin: 6.3,
+      retained: 30, cancelled: 60, nonRetainable: 25, retentionPct: 33.3,
+      retainedReasons: "Retained free month (10), Retained agent explanation (7), Retained cover adjustment (4), Retained price freeze (4), Retained delayed cover (3), Retained product (2)",
+      nonRetainableReasons: "No longer have pet (10), Pet passed away (8), Personal situation (4), Didn't mean to sign up (2), Overseas (1)",
+    },
+    {
+      weekStarting: "2026-07-13", chatsHandled: 609, cancellationChats: 105, historys: 1139, csatPct: 95.2, csatResponses: 84, medianFrtMin: 8.4,
+      retained: 17, cancelled: 69, nonRetainable: 23, retentionPct: 19.8,
+      retainedReasons: "Retained free month (6), Retained agent explanation (4), Retained product (2), Retained price freeze (2), Retained delayed cover (2)",
+      nonRetainableReasons: "No longer have pet (7), Pet passed away (7), Personal situation (4), Overseas (4), Lost pet (1)",
+    },
+  ];
+
+  const CURRENT = WEEKS[WEEKS.length - 1];
+  const PREV = WEEKS[WEEKS.length - 2];
+
+  function formatDate(iso, offsetDays = 0) {
+    const d = new Date(iso + "T00:00:00");
+    d.setDate(d.getDate() + offsetDays);
+    return d.toLocaleDateString("en-AU", { month: "short", day: "numeric" });
+  }
+
+  function deltaHtml(current, previous, { suffix = "", lowerIsBetter = false } = {}) {
+    const diff = current - previous;
+    const up = diff >= 0;
+    const good = lowerIsBetter ? !up : up;
+    const arrow = up ? "&#8593;" : "&#8595;";
+    const magnitude = Math.abs(diff);
+    const text = (diff % 1 === 0 ? magnitude.toFixed(0) : magnitude.toFixed(1)) + suffix;
+    return `<span class="delta ${good ? "good" : "bad"}">${arrow} ${text} vs last week</span>`;
+  }
+
+  // ── KPI row ──
+  document.getElementById("header-range").textContent =
+    `Week of ${formatDate(CURRENT.weekStarting)} – ${formatDate(CURRENT.weekStarting, 6)}, 2026 · sourced from Intercom conversations`;
+
+  document.getElementById("kpi-chats").textContent = CURRENT.chatsHandled;
+  document.getElementById("kpi-chats-delta").innerHTML = deltaHtml(CURRENT.chatsHandled, PREV.chatsHandled);
+
+  document.getElementById("kpi-historys").textContent = CURRENT.historys;
+  document.getElementById("kpi-historys-delta").innerHTML = deltaHtml(CURRENT.historys, PREV.historys);
+
+  document.getElementById("kpi-cancellation-chats").textContent = CURRENT.cancellationChats;
+  document.getElementById("kpi-cancellation-chats-delta").innerHTML = deltaHtml(CURRENT.cancellationChats, PREV.cancellationChats);
+
+  document.getElementById("kpi-csat").textContent = CURRENT.csatPct + "%";
+  document.getElementById("kpi-csat-delta").innerHTML = deltaHtml(CURRENT.csatPct, PREV.csatPct, { suffix: "pt" });
+  document.getElementById("kpi-csat-responses").textContent = CURRENT.csatResponses + " responses";
+
+  document.getElementById("kpi-frt").textContent = CURRENT.medianFrtMin + "m";
+  document.getElementById("kpi-frt-delta").innerHTML = deltaHtml(CURRENT.medianFrtMin, PREV.medianFrtMin, { suffix: "m", lowerIsBetter: true });
+
+  document.getElementById("kpi-retention").textContent = CURRENT.retentionPct + "%";
+  document.getElementById("kpi-retention-delta").innerHTML = deltaHtml(CURRENT.retentionPct, PREV.retentionPct, { suffix: "pt" });
+
+  // ── Volume + cancellation ──
+  document.getElementById("vol-comms").textContent = CURRENT.chatsHandled;
+  document.getElementById("vol-history").textContent = CURRENT.historys;
+  document.getElementById("vol-cancellation").textContent = CURRENT.cancellationChats;
+  document.getElementById("vol-total").textContent = CURRENT.chatsHandled + CURRENT.historys;
+
+  // ── Retention outcomes ──
+  document.getElementById("ret-retained").textContent = CURRENT.retained;
+  document.getElementById("ret-cancelled").textContent = CURRENT.cancelled;
+  document.getElementById("ret-nonretainable").textContent = CURRENT.nonRetainable;
+  document.getElementById("ret-retained-reasons").textContent = CURRENT.retainedReasons;
+  document.getElementById("ret-nonretainable-reasons").textContent = CURRENT.nonRetainableReasons;
+  document.getElementById("ret-total").textContent = CURRENT.retained + CURRENT.cancelled + CURRENT.nonRetainable;
+  document.getElementById("ret-rate").textContent = CURRENT.retentionPct + "%";
+  document.getElementById("ret-bar").style.width = Math.min(100, CURRENT.retentionPct) + "%";
+  document.getElementById("ret-insight").textContent =
+    `Retained ÷ (retained + cancelled). Dropped from ${PREV.retentionPct}% the prior week — cancelled volume rose to ${CURRENT.cancelled} while retained fell to ${CURRENT.retained}.`;
+
+  // ── Trend table ──
+  const tbody = document.getElementById("trend-body");
+  WEEKS.forEach((w) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${formatDate(w.weekStarting)}</td>
+      <td class="right">${w.chatsHandled}</td>
+      <td class="right">${w.historys}</td>
+      <td class="right">${w.csatPct}%</td>
+      <td class="right">${w.medianFrtMin}m</td>
+      <td class="right">${w.retentionPct}%</td>
+      <td style="font-size:0.78rem;color:var(--muted);">${w.retainedReasons}</td>
+      <td style="font-size:0.78rem;color:var(--muted);">${w.nonRetainableReasons}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // ── Volume bar chart ──
+  const svgNS = "http://www.w3.org/2000/svg";
+  function makeEl(tag, attrs) {
+    const el = document.createElementNS(svgNS, tag);
+    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+    return el;
+  }
+
+  (function drawVolumeChart() {
+    const svg = document.getElementById("volume-chart");
+    const width = 560, height = 220;
+    const padding = { top: 12, right: 12, bottom: 28, left: 36 };
+    const chartW = width - padding.left - padding.right;
+    const chartH = height - padding.top - padding.bottom;
+    const groupW = chartW / WEEKS.length;
+    const series = [
+      { key: "chatsHandled", color: "var(--orange-pastel)" },
+      { key: "historys", color: "var(--green-pastel)" },
+      { key: "cancellationChats", color: "var(--purple-pastel)" },
+    ];
+    const barGap = 4;
+    const barW = (groupW * 0.72 - barGap * (series.length - 1)) / series.length;
+    const maxVal = Math.max(...WEEKS.map((w) => Math.max(w.chatsHandled, w.historys, w.cancellationChats)));
+    const niceMax = Math.ceil(maxVal / 200) * 200;
+    const yTicks = [0, niceMax / 2, niceMax];
+
+    yTicks.forEach((t) => {
+      const y = padding.top + chartH - (t / niceMax) * chartH;
+      svg.appendChild(makeEl("line", { x1: padding.left, x2: width - padding.right, y1: y, y2: y, stroke: "var(--border-subtle)", "stroke-width": 1 }));
+      const text = makeEl("text", { x: padding.left - 8, y: y + 3, "text-anchor": "end", "font-size": 9, fill: "var(--muted)" });
+      text.textContent = t;
+      svg.appendChild(text);
+    });
+
+    // Always-on count label above a bar.
+    function addCountLabel(x, y, count, color) {
+      const label = makeEl("text", {
+        x, y: y - 6, "text-anchor": "middle", "font-size": 10, fill: color,
+        class: "volume-bar-label",
+      });
+      label.textContent = count;
+      svg.appendChild(label);
+    }
+
+    const totalBarsW = barW * series.length + barGap * (series.length - 1);
+
+    WEEKS.forEach((w, i) => {
+      const groupX = padding.left + i * groupW;
+      const startX = groupX + groupW / 2 - totalBarsW / 2;
+
+      series.forEach((s, si) => {
+        const value = w[s.key];
+        const barH = (value / niceMax) * chartH;
+        const barX = startX + si * (barW + barGap);
+        const barY = padding.top + chartH - barH;
+
+        svg.appendChild(makeEl("rect", {
+          x: barX, y: barY, width: barW, height: barH, rx: 3,
+          fill: s.color, class: "volume-bar",
+        }));
+        addCountLabel(barX + barW / 2, barY, value, s.color);
+      });
+
+      const label = makeEl("text", { x: groupX + groupW / 2, y: height - 8, "text-anchor": "middle", "font-size": 9, fill: "var(--muted)" });
+      label.textContent = formatDate(w.weekStarting);
+      svg.appendChild(label);
+    });
+  })();
+
+  // ── Single-line percentage trend chart (used for CSAT and Retention) ──
+  function drawLineChart(svgId, valueKey, color) {
+    const svg = document.getElementById(svgId);
+    const width = 560, height = 220;
+    const padding = { top: 12, right: 12, bottom: 28, left: 32 };
+    const chartW = width - padding.left - padding.right;
+    const chartH = height - padding.top - padding.bottom;
+    const min = 0, max = 100;
+    const stepX = chartW / (WEEKS.length - 1);
+
+    function toXY(value, i) {
+      const x = padding.left + i * stepX;
+      const y = padding.top + chartH - ((value - min) / (max - min)) * chartH;
+      return [x, y];
+    }
+
+    const yTicks = [0, 25, 50, 75, 100];
+    yTicks.forEach((t) => {
+      const y = padding.top + chartH - (t / 100) * chartH;
+      svg.appendChild(makeEl("line", { x1: padding.left, x2: width - padding.right, y1: y, y2: y, stroke: "var(--border-subtle)", "stroke-width": 1 }));
+      const text = makeEl("text", { x: padding.left - 8, y: y + 3, "text-anchor": "end", "font-size": 9, fill: "var(--muted)" });
+      text.textContent = t;
+      svg.appendChild(text);
+    });
+
+    const points = WEEKS.map((w, i) => toXY(w[valueKey], i).join(",")).join(" ");
+    svg.appendChild(makeEl("polyline", { points, fill: "none", stroke: color, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+
+    // Always-on value label near a point. Flips below the point if there
+    // isn't enough room above (e.g. CSAT sits near the top).
+    function addValueLabel(x, y, value) {
+      const dy = y - padding.top < 20 ? 18 : -10;
+      const label = makeEl("text", {
+        x, y: y + dy, "text-anchor": "middle", "font-size": 11, fill: color,
+        class: "volume-bar-label",
+      });
+      label.textContent = value + "%";
+      svg.appendChild(label);
+    }
+
+    WEEKS.forEach((w, i) => {
+      const [cx, cy] = toXY(w[valueKey], i);
+
+      svg.appendChild(makeEl("circle", { cx, cy, r: 5, fill: color, class: "volume-bar" }));
+      addValueLabel(cx, cy, w[valueKey]);
+
+      const label = makeEl("text", { x: padding.left + i * stepX, y: height - 8, "text-anchor": "middle", "font-size": 9, fill: "var(--muted)" });
+      label.textContent = formatDate(w.weekStarting);
+      svg.appendChild(label);
+    });
+  }
+
+  drawLineChart("csat-chart", "csatPct", "var(--pink-ink)");
+  drawLineChart("retention-chart", "retentionPct", "var(--warning)");
+</script>
+</body>
+</html>
