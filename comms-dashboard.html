@@ -339,6 +339,20 @@
       </div>
     </div>
 
+    <!-- KPI row: PIP -->
+    <div class="grid grid-3 mt-4">
+      <div class="card">
+        <p class="stat-label">PIP Resolution %</p>
+        <p class="stat-value" id="kpi-pip-resolution"></p>
+        <p class="stat-hint" id="kpi-pip-resolution-delta"></p>
+      </div>
+      <div class="card">
+        <p class="stat-label">PIP Escalation %</p>
+        <p class="stat-value" id="kpi-pip-escalation"></p>
+        <p class="stat-hint" id="kpi-pip-escalation-delta"></p>
+      </div>
+    </div>
+
     <!-- Volume by inbox: breakdown table sits above its bar graph -->
     <div class="mt-8">
       <h3 class="section-title">Volume by inbox</h3>
@@ -474,24 +488,28 @@
   const WEEKS = [
     {
       weekStarting: "2026-06-22", chatsHandled: 443, cancellationChats: 99, historys: 1046, csatPct: 93.9, csatResponses: 49, medianFrtMin: 5.4,
+      pipResolutionPct: 50.9, pipEscalationPct: 24.8,
       retained: 25, cancelled: 57, nonRetainable: 17, retentionPct: 30.5,
       retainedReasons: "Retained free month (11), Retained agent explanation (4), Retained cover adjustment (4), Retained product (3), Retained delayed cover (2)",
       nonRetainableReasons: "No longer have pet (8), Personal situation (4), Pet passed away (3)",
     },
     {
       weekStarting: "2026-06-29", chatsHandled: 446, cancellationChats: 108, historys: 935, csatPct: 98.0, csatResponses: 51, medianFrtMin: 6.2,
+      pipResolutionPct: 51.7, pipEscalationPct: 23.6,
       retained: 28, cancelled: 60, nonRetainable: 16, retentionPct: 31.8,
       retainedReasons: "Retained free month (9), Retained agent explanation (7), Retained delayed cover (5), Retained price freeze (3), Retained cover adjustment (3), Retained payment plan (1)",
       nonRetainableReasons: "No longer have pet (6), Personal situation (4), Didn't mean to sign up (4), Overseas (1), Pet passed away (1)",
     },
     {
       weekStarting: "2026-07-06", chatsHandled: 483, cancellationChats: 115, historys: 1042, csatPct: 96.0, csatResponses: 75, medianFrtMin: 6.3,
+      pipResolutionPct: 51.9, pipEscalationPct: 23.1,
       retained: 30, cancelled: 60, nonRetainable: 25, retentionPct: 33.3,
       retainedReasons: "Retained free month (10), Retained agent explanation (7), Retained cover adjustment (4), Retained price freeze (4), Retained delayed cover (3), Retained product (2)",
       nonRetainableReasons: "No longer have pet (10), Pet passed away (8), Personal situation (4), Didn't mean to sign up (2), Overseas (1)",
     },
     {
-      weekStarting: "2026-07-13", chatsHandled: 609, cancellationChats: 105, historys: 1139, csatPct: 95.2, csatResponses: 84, medianFrtMin: 8.4,
+      weekStarting: "2026-07-13", chatsHandled: 610, cancellationChats: 105, historys: 1139, csatPct: 95.2, csatResponses: 84, medianFrtMin: 8.4,
+      pipResolutionPct: 50.7, pipEscalationPct: 23.9,
       retained: 17, cancelled: 69, nonRetainable: 23, retentionPct: 19.8,
       retainedReasons: "Retained free month (6), Retained agent explanation (4), Retained product (2), Retained price freeze (2), Retained delayed cover (2)",
       nonRetainableReasons: "No longer have pet (7), Pet passed away (7), Personal situation (4), Overseas (4), Lost pet (1)",
@@ -539,6 +557,12 @@
 
   document.getElementById("kpi-retention").textContent = CURRENT.retentionPct + "%";
   document.getElementById("kpi-retention-delta").innerHTML = deltaHtml(CURRENT.retentionPct, PREV.retentionPct, { suffix: "pt" });
+
+  document.getElementById("kpi-pip-resolution").textContent = CURRENT.pipResolutionPct + "%";
+  document.getElementById("kpi-pip-resolution-delta").innerHTML = deltaHtml(CURRENT.pipResolutionPct, PREV.pipResolutionPct, { suffix: "pt" });
+
+  document.getElementById("kpi-pip-escalation").textContent = CURRENT.pipEscalationPct + "%";
+  document.getElementById("kpi-pip-escalation-delta").innerHTML = deltaHtml(CURRENT.pipEscalationPct, PREV.pipEscalationPct, { suffix: "pt", lowerIsBetter: true });
 
   // ── Volume + cancellation ──
   document.getElementById("vol-comms").textContent = CURRENT.chatsHandled;
