@@ -405,13 +405,13 @@
     <!-- Cancellations & Retentions -->
     <div class="section-banner mt-8">Cancellations &amp; Retentions</div>
 
-    <div class="grid grid-2 mt-4">
-      <div class="card">
-        <p class="chart-title">Retention trend</p>
-        <p class="chart-subtitle">Weekly retention rate · chart window: last 4 weeks</p>
-        <svg id="retention-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
-      </div>
+    <div class="card mt-4">
+      <p class="chart-title">Retention trend</p>
+      <p class="chart-subtitle">Weekly retention rate · chart window: last 4 weeks</p>
+      <svg id="retention-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+    </div>
 
+    <div class="grid grid-2 mt-4">
       <div>
         <h3 class="section-title">Retention outcomes</h3>
         <div class="section-card">
@@ -432,15 +432,15 @@
             <span id="ret-total"></span>
           </div>
         </div>
+      </div>
 
-        <div class="card mt-4">
-          <div class="flex-between" style="margin-bottom:12px;">
-            <span style="font-size:0.9rem;font-weight:500;">Retention rate</span>
-            <span style="font-size:0.9rem;font-weight:600;" class="tabular-nums" id="ret-rate"></span>
-          </div>
-          <div class="bar-track"><div class="bar-fill" id="ret-bar" style="background:var(--warning);"></div></div>
-          <p class="insight" id="ret-insight"></p>
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span style="font-size:0.9rem;font-weight:500;">Retention rate</span>
+          <span style="font-size:0.9rem;font-weight:600;" class="tabular-nums" id="ret-rate"></span>
         </div>
+        <div class="bar-track"><div class="bar-fill" id="ret-bar" style="background:var(--warning);"></div></div>
+        <p class="insight" id="ret-insight"></p>
       </div>
     </div>
 
