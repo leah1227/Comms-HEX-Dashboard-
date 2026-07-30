@@ -621,7 +621,7 @@
       const collides = yTickPositions.some((ty) => Math.abs(ty - labelY) < 9);
       if (collides) labelY += dy > 0 ? 13 : -13;
       const label = makeEl("text", {
-        x, y: labelY, "text-anchor": "middle", "font-size": 9, fill: color,
+        x, y: labelY, "text-anchor": "middle", "font-size": 8, fill: "var(--muted)",
         class: "volume-bar-label",
       });
       label.textContent = value + "%";
@@ -642,7 +642,7 @@
     const lastIdx = WEEKS.length - 1;
     const [endX, endY] = toXY(WEEKS[lastIdx][valueKey], lastIdx);
     const endLabel = makeEl("text", {
-      x: endX + 14, y: endY + 4, "text-anchor": "start", "font-size": 9, "font-weight": 700, fill: color,
+      x: endX + 14, y: endY + 4, "text-anchor": "start", "font-size": 8, fill: "var(--muted)",
     });
     endLabel.textContent = `${seriesLabel} ${WEEKS[lastIdx][valueKey]}%`;
     svg.appendChild(endLabel);
