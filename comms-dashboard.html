@@ -53,9 +53,10 @@
     --radius-full: 9999px;
     --shadow-sm: 0 1px 2px rgba(5, 5, 5, 0.05), 0 1px 0 rgba(5, 5, 5, 0.02);
 
-    --page-bg: var(--neutral-0);
-    --box-bg: color-mix(in oklab, var(--pink-soft) 40%, var(--neutral-0));
-    --box-bg-strong: color-mix(in oklab, var(--pink-soft) 65%, var(--neutral-0));
+    --page-bg: color-mix(in oklab, var(--pink-soft) 40%, var(--neutral-0));
+    --box-bg: var(--neutral-0);
+    --box-bg-strong: var(--neutral-100);
+    --chart-line: #a7a7ad;
   }
 
   * { box-sizing: border-box; }
@@ -645,8 +646,8 @@
     svg.appendChild(endLabel);
   }
 
-  drawLineChart("csat-chart", "csatPct", "var(--pink-ink)", "CSAT");
-  drawLineChart("retention-chart", "retentionPct", "var(--warning)", "Retention");
+  drawLineChart("csat-chart", "csatPct", "var(--chart-line)", "CSAT");
+  drawLineChart("retention-chart", "retentionPct", "var(--chart-line)", "Retention");
 </script>
 </body>
 </html>
