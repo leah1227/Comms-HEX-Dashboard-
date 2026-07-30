@@ -487,13 +487,6 @@
   // both inboxes (any chat closed that week with a Retained/Cancellation tag).
   const WEEKS = [
     {
-      weekStarting: "2026-06-22", chatsHandled: 443, cancellationChats: 99, historys: 1046, csatPct: 93.9, csatResponses: 49, medianFrtMin: 5.4,
-      pipResolutionPct: 50.9, pipEscalationPct: 24.8,
-      retained: 25, cancelled: 57, nonRetainable: 17, retentionPct: 30.5,
-      retainedReasons: "Retained free month (11), Retained agent explanation (4), Retained cover adjustment (4), Retained product (3), Retained delayed cover (2)",
-      nonRetainableReasons: "No longer have pet (8), Personal situation (4), Pet passed away (3)",
-    },
-    {
       weekStarting: "2026-06-29", chatsHandled: 446, cancellationChats: 108, historys: 935, csatPct: 98.0, csatResponses: 51, medianFrtMin: 6.2,
       pipResolutionPct: 51.7, pipEscalationPct: 23.6,
       retained: 28, cancelled: 60, nonRetainable: 16, retentionPct: 31.8,
@@ -502,17 +495,24 @@
     },
     {
       weekStarting: "2026-07-06", chatsHandled: 483, cancellationChats: 115, historys: 1042, csatPct: 96.0, csatResponses: 75, medianFrtMin: 6.3,
-      pipResolutionPct: 51.9, pipEscalationPct: 23.1,
+      pipResolutionPct: 52.2, pipEscalationPct: 22.8,
       retained: 30, cancelled: 60, nonRetainable: 25, retentionPct: 33.3,
       retainedReasons: "Retained free month (10), Retained agent explanation (7), Retained cover adjustment (4), Retained price freeze (4), Retained delayed cover (3), Retained product (2)",
       nonRetainableReasons: "No longer have pet (10), Pet passed away (8), Personal situation (4), Didn't mean to sign up (2), Overseas (1)",
     },
     {
-      weekStarting: "2026-07-13", chatsHandled: 610, cancellationChats: 105, historys: 1139, csatPct: 95.2, csatResponses: 84, medianFrtMin: 8.4,
-      pipResolutionPct: 50.7, pipEscalationPct: 23.9,
+      weekStarting: "2026-07-13", chatsHandled: 609, cancellationChats: 106, historys: 1138, csatPct: 94.0, csatResponses: 84, medianFrtMin: 8.4,
+      pipResolutionPct: 50.5, pipEscalationPct: 24.2,
       retained: 17, cancelled: 69, nonRetainable: 23, retentionPct: 19.8,
       retainedReasons: "Retained free month (6), Retained agent explanation (4), Retained product (2), Retained price freeze (2), Retained delayed cover (2)",
       nonRetainableReasons: "No longer have pet (7), Pet passed away (7), Personal situation (4), Overseas (4), Lost pet (1)",
+    },
+    {
+      weekStarting: "2026-07-20", chatsHandled: 468, cancellationChats: 89, historys: 1203, csatPct: 91.0, csatResponses: 67, medianFrtMin: 5.6,
+      pipResolutionPct: 50.4, pipEscalationPct: 25.4,
+      retained: 18, cancelled: 64, nonRetainable: 12, retentionPct: 22.0,
+      retainedReasons: "Retained free month (7), Retained agent explanation (6), Retained price freeze (3), Retained product (1), Retained discount (1)",
+      nonRetainableReasons: "No longer have pet (8), Pet passed away (2), Didn't mean to sign up (1), Overseas (1)",
     },
   ];
 
@@ -579,8 +579,16 @@
   document.getElementById("ret-total").textContent = CURRENT.retained + CURRENT.cancelled + CURRENT.nonRetainable;
   document.getElementById("ret-rate").textContent = CURRENT.retentionPct + "%";
   document.getElementById("ret-bar").style.width = Math.min(100, CURRENT.retentionPct) + "%";
-  document.getElementById("ret-insight").textContent =
-    `Retained ÷ (retained + cancelled). Dropped from ${PREV.retentionPct}% the prior week — cancelled volume rose to ${CURRENT.cancelled} while retained fell to ${CURRENT.retained}.`;
+  (function renderRetentionInsight() {
+    const retentionUp = CURRENT.retentionPct >= PREV.retentionPct;
+    const cancelledUp = CURRENT.cancelled >= PREV.cancelled;
+    const retainedUp = CURRENT.retained >= PREV.retained;
+    const trendVerb = retentionUp ? "Up" : "Down";
+    const cancelledVerb = cancelledUp ? "rose" : "fell";
+    const retainedVerb = retainedUp ? "rose" : "fell";
+    document.getElementById("ret-insight").textContent =
+      `Retained ÷ (retained + cancelled). ${trendVerb} from ${PREV.retentionPct}% the prior week — cancelled volume ${cancelledVerb} to ${CURRENT.cancelled} while retained ${retainedVerb} to ${CURRENT.retained}.`;
+  })();
 
   // ── Trend table ──
   const tbody = document.getElementById("trend-body");
