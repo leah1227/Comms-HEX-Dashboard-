@@ -55,7 +55,7 @@
 
     --page-bg: color-mix(in oklab, var(--pink-soft) 40%, var(--neutral-0));
     --box-bg: var(--neutral-0);
-    --box-bg-strong: var(--neutral-100);
+    --box-bg-strong: var(--neutral-0);
     --chart-line: #a7a7ad;
   }
 
@@ -298,6 +298,8 @@
 
   .section-banner {
     background: var(--box-bg-strong);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
     border-radius: var(--radius-lg);
     padding: 16px 20px;
     font-size: 1.15rem;
@@ -605,7 +607,7 @@
     });
 
     const points = WEEKS.map((w, i) => toXY(w[valueKey], i).join(",")).join(" ");
-    svg.appendChild(makeEl("polyline", { points, fill: "none", stroke: color, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+    svg.appendChild(makeEl("polyline", { points, fill: "none", stroke: color, "stroke-width": 1.25, "stroke-linecap": "round", "stroke-linejoin": "round" }));
 
     // Always-on value label near a point, offset above/below depending on
     // room near the chart edges. Nudged further if it would otherwise land
@@ -629,7 +631,7 @@
     WEEKS.forEach((w, i) => {
       const [cx, cy] = toXY(w[valueKey], i);
 
-      svg.appendChild(makeEl("circle", { cx, cy, r: 4, fill: color, class: "volume-bar" }));
+      svg.appendChild(makeEl("circle", { cx, cy, r: 3, fill: color, class: "volume-bar" }));
       addValueLabel(cx, cy, w[valueKey]);
 
       const label = makeEl("text", { x: padding.left + i * stepX, y: height - 8, "text-anchor": "middle", "font-size": 8, fill: "var(--muted)" });
