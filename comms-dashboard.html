@@ -237,6 +237,17 @@
   .legend-item { display: flex; align-items: center; gap: 5px; }
   .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
+  .chart-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 2px;
+  }
+  .chart-subtitle {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+
   .volume-bar { }
   .volume-bar-label { pointer-events: none; font-weight: 600; }
 
@@ -376,27 +387,18 @@
       </div>
 
       <div class="card mt-4">
-        <div class="flex-between" style="margin-bottom:12px;">
-          <span class="legend">
-            <span class="legend-item"><span class="legend-dot" style="background:var(--orange-pastel)"></span>Comms</span>
-            <span class="legend-item"><span class="legend-dot" style="background:var(--green-pastel)"></span>History &amp; Invoices</span>
-            <span class="legend-item"><span class="legend-dot" style="background:var(--purple-pastel)"></span>Cancellation Chats</span>
-          </span>
-        </div>
-        <svg id="volume-chart" viewBox="0 0 560 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+        <p class="chart-title">Volume by inbox</p>
+        <p class="chart-subtitle">Weekly conversation volume · total bars · inbox lines · chart window: last 4 weeks</p>
+        <svg id="volume-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
       </div>
     </div>
 
     <!-- CSAT trend -->
     <div class="mt-4">
       <div class="card">
-        <div class="flex-between" style="margin-bottom:12px;">
-          <span style="font-size:0.9rem;font-weight:500;">CSAT trend</span>
-          <span class="legend">
-            <span class="legend-item"><span class="legend-dot" style="background:var(--pink-ink)"></span>CSAT %</span>
-          </span>
-        </div>
-        <svg id="csat-chart" viewBox="0 0 560 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+        <p class="chart-title">CSAT trend</p>
+        <p class="chart-subtitle">Weekly CSAT · chart window: last 4 weeks</p>
+        <svg id="csat-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
       </div>
     </div>
 
@@ -405,13 +407,9 @@
 
     <div class="grid grid-2 mt-4">
       <div class="card">
-        <div class="flex-between" style="margin-bottom:12px;">
-          <span style="font-size:0.9rem;font-weight:500;">Retention trend</span>
-          <span class="legend">
-            <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>Retention %</span>
-          </span>
-        </div>
-        <svg id="retention-chart" viewBox="0 0 560 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+        <p class="chart-title">Retention trend</p>
+        <p class="chart-subtitle">Weekly retention rate · chart window: last 4 weeks</p>
+        <svg id="retention-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
       </div>
 
       <div>
@@ -422,7 +420,7 @@
             <span class="pill success" id="ret-retained"></span>
           </div>
           <div class="section-row">
-            <div><div class="label"># of cancellation requests</div></div>
+            <div><div class="label"># of cancellation requests</div><div class="value" id="ret-cancelled-reasons"></div></div>
             <span class="pill warning" id="ret-cancelled"></span>
           </div>
           <div class="section-row">
@@ -491,6 +489,7 @@
       pipResolutionPct: 51.7, pipEscalationPct: 23.6,
       retained: 28, cancelled: 60, nonRetainable: 16, retentionPct: 31.8,
       retainedReasons: "Retained free month (9), Retained agent explanation (7), Retained delayed cover (5), Retained price freeze (3), Retained cover adjustment (3), Retained payment plan (1)",
+      cancellationReasons: "",
       nonRetainableReasons: "No longer have pet (6), Personal situation (4), Didn't mean to sign up (4), Overseas (1), Pet passed away (1)",
     },
     {
@@ -498,6 +497,7 @@
       pipResolutionPct: 52.2, pipEscalationPct: 22.8,
       retained: 30, cancelled: 60, nonRetainable: 25, retentionPct: 33.3,
       retainedReasons: "Retained free month (10), Retained agent explanation (7), Retained cover adjustment (4), Retained price freeze (4), Retained delayed cover (3), Retained product (2)",
+      cancellationReasons: "",
       nonRetainableReasons: "No longer have pet (10), Pet passed away (8), Personal situation (4), Didn't mean to sign up (2), Overseas (1)",
     },
     {
@@ -505,6 +505,7 @@
       pipResolutionPct: 50.5, pipEscalationPct: 24.2,
       retained: 17, cancelled: 69, nonRetainable: 23, retentionPct: 19.8,
       retainedReasons: "Retained free month (6), Retained agent explanation (4), Retained product (2), Retained price freeze (2), Retained delayed cover (2)",
+      cancellationReasons: "",
       nonRetainableReasons: "No longer have pet (7), Pet passed away (7), Personal situation (4), Overseas (4), Lost pet (1)",
     },
     {
@@ -512,6 +513,7 @@
       pipResolutionPct: 50.4, pipEscalationPct: 25.4,
       retained: 18, cancelled: 64, nonRetainable: 12, retentionPct: 22.0,
       retainedReasons: "Retained free month (7), Retained agent explanation (6), Retained price freeze (3), Retained product (1), Retained discount (1)",
+      cancellationReasons: "",
       nonRetainableReasons: "No longer have pet (8), Pet passed away (2), Didn't mean to sign up (1), Overseas (1)",
     },
   ];
@@ -576,6 +578,11 @@
   document.getElementById("ret-nonretainable").textContent = CURRENT.nonRetainable;
   document.getElementById("ret-retained-reasons").textContent = CURRENT.retainedReasons;
   document.getElementById("ret-nonretainable-reasons").textContent = CURRENT.nonRetainableReasons;
+  if (CURRENT.cancellationReasons) {
+    document.getElementById("ret-cancelled-reasons").textContent = CURRENT.cancellationReasons;
+  } else {
+    document.getElementById("ret-cancelled-reasons").style.display = "none";
+  }
   document.getElementById("ret-total").textContent = CURRENT.retained + CURRENT.cancelled + CURRENT.nonRetainable;
   document.getElementById("ret-rate").textContent = CURRENT.retentionPct + "%";
   document.getElementById("ret-bar").style.width = Math.min(100, CURRENT.retentionPct) + "%";
@@ -615,72 +622,99 @@
     return el;
   }
 
+  // Single total bar per week (Comms + History & Invoices) with the three
+  // inbox breakdowns overlaid as trend lines, mirroring the "bar + channel
+  // lines" report style: bars carry the total, lines carry the mix.
   (function drawVolumeChart() {
     const svg = document.getElementById("volume-chart");
-    const width = 560, height = 220;
-    const padding = { top: 12, right: 12, bottom: 28, left: 36 };
+    const width = 620, height = 220;
+    const padding = { top: 16, right: 128, bottom: 28, left: 36 };
     const chartW = width - padding.left - padding.right;
     const chartH = height - padding.top - padding.bottom;
     const groupW = chartW / WEEKS.length;
     const series = [
-      { key: "chatsHandled", color: "var(--orange-pastel)" },
-      { key: "historys", color: "var(--green-pastel)" },
-      { key: "cancellationChats", color: "var(--purple-pastel)" },
+      { key: "chatsHandled", color: "var(--orange-pastel)", label: "Comms" },
+      { key: "historys", color: "var(--green-pastel)", label: "History" },
+      { key: "cancellationChats", color: "var(--purple-pastel)", label: "Cancellation" },
     ];
-    const barGap = 4;
-    const barW = (groupW * 0.72 - barGap * (series.length - 1)) / series.length;
-    const maxVal = Math.max(...WEEKS.map((w) => Math.max(w.chatsHandled, w.historys, w.cancellationChats)));
+
+    const totals = WEEKS.map((w) => w.chatsHandled + w.historys);
+    const maxVal = Math.max(...totals, ...WEEKS.map((w) => Math.max(w.chatsHandled, w.historys, w.cancellationChats)));
     const niceMax = Math.ceil(maxVal / 200) * 200;
     const yTicks = [0, niceMax / 2, niceMax];
 
+    function yFor(value) { return padding.top + chartH - (value / niceMax) * chartH; }
+    function xFor(i) { return padding.left + i * groupW + groupW / 2; }
+
     yTicks.forEach((t) => {
-      const y = padding.top + chartH - (t / niceMax) * chartH;
+      const y = yFor(t);
       svg.appendChild(makeEl("line", { x1: padding.left, x2: width - padding.right, y1: y, y2: y, stroke: "var(--border-subtle)", "stroke-width": 1 }));
       const text = makeEl("text", { x: padding.left - 8, y: y + 3, "text-anchor": "end", "font-size": 9, fill: "var(--muted)" });
       text.textContent = t;
       svg.appendChild(text);
     });
 
-    // Always-on count label above a bar.
-    function addCountLabel(x, y, count, color) {
-      const label = makeEl("text", {
-        x, y: y - 6, "text-anchor": "middle", "font-size": 10, fill: color,
-        class: "volume-bar-label",
-      });
-      label.textContent = count;
-      svg.appendChild(label);
-    }
+    const barW = groupW * 0.46;
 
-    const totalBarsW = barW * series.length + barGap * (series.length - 1);
-
+    // Total bars (Comms + History & Invoices).
     WEEKS.forEach((w, i) => {
-      const groupX = padding.left + i * groupW;
-      const startX = groupX + groupW / 2 - totalBarsW / 2;
+      const total = w.chatsHandled + w.historys;
+      const cx = xFor(i);
+      const barY = yFor(total);
+      const barH = padding.top + chartH - barY;
 
-      series.forEach((s, si) => {
-        const value = w[s.key];
-        const barH = (value / niceMax) * chartH;
-        const barX = startX + si * (barW + barGap);
-        const barY = padding.top + chartH - barH;
+      svg.appendChild(makeEl("rect", {
+        x: cx - barW / 2, y: barY, width: barW, height: barH, rx: 4,
+        fill: "color-mix(in oklab, var(--pink) 55%, white)", class: "volume-bar",
+      }));
 
-        svg.appendChild(makeEl("rect", {
-          x: barX, y: barY, width: barW, height: barH, rx: 3,
-          fill: s.color, class: "volume-bar",
-        }));
-        addCountLabel(barX + barW / 2, barY, value, s.color);
+      const totalLabel = makeEl("text", {
+        x: cx, y: barY - 8, "text-anchor": "middle", "font-size": 11, "font-weight": 700, fill: "var(--foreground)",
+      });
+      totalLabel.textContent = total;
+      svg.appendChild(totalLabel);
+
+      const weekLabel = makeEl("text", { x: cx, y: height - 8, "text-anchor": "middle", "font-size": 9, fill: "var(--muted)" });
+      weekLabel.textContent = formatDate(w.weekStarting);
+      svg.appendChild(weekLabel);
+    });
+
+    // Inbox breakdown lines, each with per-point labels and an end-of-line tag.
+    series.forEach((s) => {
+      const points = WEEKS.map((w, i) => `${xFor(i)},${yFor(w[s.key])}`).join(" ");
+      svg.appendChild(makeEl("polyline", {
+        points, fill: "none", stroke: s.color, "stroke-width": 2,
+        "stroke-linecap": "round", "stroke-linejoin": "round",
+      }));
+
+      WEEKS.forEach((w, i) => {
+        const cx = xFor(i);
+        const cy = yFor(w[s.key]);
+        svg.appendChild(makeEl("circle", { cx, cy, r: 3.5, fill: s.color }));
+        const label = makeEl("text", {
+          x: cx, y: cy - 8, "text-anchor": "middle", "font-size": 9, "font-weight": 600, fill: s.color,
+          class: "volume-bar-label",
+        });
+        label.textContent = w[s.key];
+        svg.appendChild(label);
       });
 
-      const label = makeEl("text", { x: groupX + groupW / 2, y: height - 8, "text-anchor": "middle", "font-size": 9, fill: "var(--muted)" });
-      label.textContent = formatDate(w.weekStarting);
-      svg.appendChild(label);
+      const lastIdx = WEEKS.length - 1;
+      const endX = xFor(lastIdx);
+      const endY = yFor(WEEKS[lastIdx][s.key]);
+      const endLabel = makeEl("text", {
+        x: endX + 14, y: endY + 4, "text-anchor": "start", "font-size": 11, "font-weight": 700, fill: s.color,
+      });
+      endLabel.textContent = `${s.label} ${WEEKS[lastIdx][s.key]}`;
+      svg.appendChild(endLabel);
     });
   })();
 
   // ── Single-line percentage trend chart (used for CSAT and Retention) ──
-  function drawLineChart(svgId, valueKey, color) {
+  function drawLineChart(svgId, valueKey, color, seriesLabel) {
     const svg = document.getElementById(svgId);
-    const width = 560, height = 220;
-    const padding = { top: 12, right: 12, bottom: 28, left: 32 };
+    const width = 620, height = 220;
+    const padding = { top: 16, right: 96, bottom: 28, left: 32 };
     const chartW = width - padding.left - padding.right;
     const chartH = height - padding.top - padding.bottom;
     const min = 0, max = 100;
@@ -726,10 +760,18 @@
       label.textContent = formatDate(w.weekStarting);
       svg.appendChild(label);
     });
+
+    const lastIdx = WEEKS.length - 1;
+    const [endX, endY] = toXY(WEEKS[lastIdx][valueKey], lastIdx);
+    const endLabel = makeEl("text", {
+      x: endX + 14, y: endY + 4, "text-anchor": "start", "font-size": 11, "font-weight": 700, fill: color,
+    });
+    endLabel.textContent = `${seriesLabel} ${WEEKS[lastIdx][valueKey]}%`;
+    svg.appendChild(endLabel);
   }
 
-  drawLineChart("csat-chart", "csatPct", "var(--pink-ink)");
-  drawLineChart("retention-chart", "retentionPct", "var(--warning)");
+  drawLineChart("csat-chart", "csatPct", "var(--pink-ink)", "CSAT");
+  drawLineChart("retention-chart", "retentionPct", "var(--warning)", "Retention");
 </script>
 </body>
 </html>
