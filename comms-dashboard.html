@@ -238,14 +238,18 @@
   .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
   .chart-title {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     font-weight: 700;
     margin: 0 0 2px;
   }
   .chart-subtitle {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     color: var(--muted);
-    margin: 0 0 16px;
+    margin: 0 0 14px;
+  }
+
+  .chart-card {
+    background: var(--surface);
   }
 
   .volume-bar { }
@@ -364,38 +368,9 @@
       </div>
     </div>
 
-    <!-- Volume by inbox: breakdown table sits above its bar graph -->
-    <div class="mt-8">
-      <h3 class="section-title">Volume by inbox</h3>
-      <div class="section-card">
-        <div class="section-row">
-          <div><div class="label">Comms</div></div>
-          <div class="amount" id="vol-comms"></div>
-        </div>
-        <div class="section-row">
-          <div><div class="label">History &amp; Invoices</div></div>
-          <div class="amount" id="vol-history"></div>
-        </div>
-        <div class="section-row">
-          <div><div class="label">Cancellation Chats</div></div>
-          <div class="amount" id="vol-cancellation"></div>
-        </div>
-        <div class="section-total">
-          <span>Total conversations</span>
-          <span id="vol-total"></span>
-        </div>
-      </div>
-
-      <div class="card mt-4">
-        <p class="chart-title">Volume by inbox</p>
-        <p class="chart-subtitle">Weekly conversation volume · total bars · inbox lines · chart window: last 4 weeks</p>
-        <svg id="volume-chart" viewBox="0 0 620 180" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
-      </div>
-    </div>
-
     <!-- CSAT trend -->
-    <div class="mt-4">
-      <div class="card">
+    <div class="mt-8">
+      <div class="card chart-card">
         <p class="chart-title">CSAT trend</p>
         <p class="chart-subtitle">Weekly CSAT · chart window: last 4 weeks</p>
         <svg id="csat-chart" viewBox="0 0 620 180" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
@@ -405,42 +380,31 @@
     <!-- Cancellations & Retentions -->
     <div class="section-banner mt-8">Cancellations &amp; Retentions</div>
 
-    <div class="card mt-4">
+    <div class="card chart-card mt-4">
       <p class="chart-title">Retention trend</p>
       <p class="chart-subtitle">Weekly retention rate · chart window: last 4 weeks</p>
       <svg id="retention-chart" viewBox="0 0 620 180" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
     </div>
 
-    <div class="grid grid-2 mt-4">
-      <div>
-        <h3 class="section-title">Retention outcomes</h3>
-        <div class="section-card">
-          <div class="section-row">
-            <div><div class="label"># of customer's retained</div><div class="value" id="ret-retained-reasons"></div></div>
-            <span class="pill success" id="ret-retained"></span>
-          </div>
-          <div class="section-row">
-            <div><div class="label"># of cancellation requests</div><div class="value" id="ret-cancelled-reasons"></div></div>
-            <span class="pill warning" id="ret-cancelled"></span>
-          </div>
-          <div class="section-row">
-            <div><div class="label"># of Non-retainable</div><div class="value" id="ret-nonretainable-reasons"></div></div>
-            <span class="pill muted" id="ret-nonretainable"></span>
-          </div>
-          <div class="section-total">
-            <span>Total</span>
-            <span id="ret-total"></span>
-          </div>
+    <div class="mt-4">
+      <h3 class="section-title">Retention outcomes</h3>
+      <div class="section-card">
+        <div class="section-row">
+          <div><div class="label"># of customer's retained</div></div>
+          <span class="pill success" id="ret-retained"></span>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="flex-between" style="margin-bottom:12px;">
-          <span style="font-size:0.9rem;font-weight:500;">Retention rate</span>
-          <span style="font-size:0.9rem;font-weight:600;" class="tabular-nums" id="ret-rate"></span>
+        <div class="section-row">
+          <div><div class="label"># of cancellation requests</div></div>
+          <span class="pill warning" id="ret-cancelled"></span>
         </div>
-        <div class="bar-track"><div class="bar-fill" id="ret-bar" style="background:var(--warning);"></div></div>
-        <p class="insight" id="ret-insight"></p>
+        <div class="section-row">
+          <div><div class="label"># of Non-retainable</div></div>
+          <span class="pill muted" id="ret-nonretainable"></span>
+        </div>
+        <div class="section-total">
+          <span>Total</span>
+          <span id="ret-total"></span>
+        </div>
       </div>
     </div>
 
@@ -468,7 +432,7 @@
               <th class="right">Median FRT</th>
               <th class="right">Retention</th>
               <th>Cancellation Reasons</th>
-              <th>Non-retainable Reasons</th>
+              <th>Retained Reasons</th>
             </tr>
           </thead>
           <tbody id="trend-body"></tbody>
@@ -566,36 +530,11 @@
   document.getElementById("kpi-pip-escalation").textContent = CURRENT.pipEscalationPct + "%";
   document.getElementById("kpi-pip-escalation-delta").innerHTML = deltaHtml(CURRENT.pipEscalationPct, PREV.pipEscalationPct, { suffix: "pt", lowerIsBetter: true });
 
-  // ── Volume + cancellation ──
-  document.getElementById("vol-comms").textContent = CURRENT.chatsHandled;
-  document.getElementById("vol-history").textContent = CURRENT.historys;
-  document.getElementById("vol-cancellation").textContent = CURRENT.cancellationChats;
-  document.getElementById("vol-total").textContent = CURRENT.chatsHandled + CURRENT.historys;
-
   // ── Retention outcomes ──
   document.getElementById("ret-retained").textContent = CURRENT.retained;
   document.getElementById("ret-cancelled").textContent = CURRENT.cancelled;
   document.getElementById("ret-nonretainable").textContent = CURRENT.nonRetainable;
-  document.getElementById("ret-retained-reasons").textContent = CURRENT.retainedReasons;
-  document.getElementById("ret-nonretainable-reasons").textContent = CURRENT.nonRetainableReasons;
-  if (CURRENT.cancellationReasons) {
-    document.getElementById("ret-cancelled-reasons").textContent = CURRENT.cancellationReasons;
-  } else {
-    document.getElementById("ret-cancelled-reasons").style.display = "none";
-  }
   document.getElementById("ret-total").textContent = CURRENT.retained + CURRENT.cancelled + CURRENT.nonRetainable;
-  document.getElementById("ret-rate").textContent = CURRENT.retentionPct + "%";
-  document.getElementById("ret-bar").style.width = Math.min(100, CURRENT.retentionPct) + "%";
-  (function renderRetentionInsight() {
-    const retentionUp = CURRENT.retentionPct >= PREV.retentionPct;
-    const cancelledUp = CURRENT.cancelled >= PREV.cancelled;
-    const retainedUp = CURRENT.retained >= PREV.retained;
-    const trendVerb = retentionUp ? "Up" : "Down";
-    const cancelledVerb = cancelledUp ? "rose" : "fell";
-    const retainedVerb = retainedUp ? "rose" : "fell";
-    document.getElementById("ret-insight").textContent =
-      `Retained ÷ (retained + cancelled). ${trendVerb} from ${PREV.retentionPct}% the prior week — cancelled volume ${cancelledVerb} to ${CURRENT.cancelled} while retained ${retainedVerb} to ${CURRENT.retained}.`;
-  })();
 
   // ── Trend table (newest week first; WEEKS itself stays chronological for the charts) ──
   const tbody = document.getElementById("trend-body");
@@ -610,7 +549,7 @@
       <td class="right">${w.medianFrtMin}m</td>
       <td class="right">${w.retentionPct}%</td>
       <td style="font-size:0.78rem;color:var(--muted);">${w.cancellationReasons || "—"}</td>
-      <td style="font-size:0.78rem;color:var(--muted);">${w.nonRetainableReasons}</td>
+      <td style="font-size:0.78rem;color:var(--muted);">${w.retainedReasons}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -622,94 +561,6 @@
     Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
     return el;
   }
-
-  // Single total bar per week (Comms + History & Invoices) with the three
-  // inbox breakdowns overlaid as trend lines, mirroring the "bar + channel
-  // lines" report style: bars carry the total, lines carry the mix.
-  (function drawVolumeChart() {
-    const svg = document.getElementById("volume-chart");
-    const width = 620, height = 180;
-    const padding = { top: 16, right: 128, bottom: 28, left: 36 };
-    const chartW = width - padding.left - padding.right;
-    const chartH = height - padding.top - padding.bottom;
-    const groupW = chartW / WEEKS.length;
-    const series = [
-      { key: "chatsHandled", color: "var(--orange-pastel)", label: "Comms" },
-      { key: "historys", color: "var(--green-pastel)", label: "History" },
-      { key: "cancellationChats", color: "var(--purple-pastel)", label: "Cancellation" },
-    ];
-
-    const totals = WEEKS.map((w) => w.chatsHandled + w.historys);
-    const maxVal = Math.max(...totals, ...WEEKS.map((w) => Math.max(w.chatsHandled, w.historys, w.cancellationChats)));
-    const niceMax = Math.ceil(maxVal / 200) * 200;
-    const yTicks = [0, niceMax / 2, niceMax];
-
-    function yFor(value) { return padding.top + chartH - (value / niceMax) * chartH; }
-    function xFor(i) { return padding.left + i * groupW + groupW / 2; }
-
-    yTicks.forEach((t) => {
-      const y = yFor(t);
-      svg.appendChild(makeEl("line", { x1: padding.left, x2: width - padding.right, y1: y, y2: y, stroke: "var(--border-subtle)", "stroke-width": 1 }));
-      const text = makeEl("text", { x: padding.left - 8, y: y + 3, "text-anchor": "end", "font-size": 9, fill: "var(--muted)" });
-      text.textContent = t;
-      svg.appendChild(text);
-    });
-
-    const barW = groupW * 0.28;
-
-    // Total bars (Comms + History & Invoices).
-    WEEKS.forEach((w, i) => {
-      const total = w.chatsHandled + w.historys;
-      const cx = xFor(i);
-      const barY = yFor(total);
-      const barH = padding.top + chartH - barY;
-
-      svg.appendChild(makeEl("rect", {
-        x: cx - barW / 2, y: barY, width: barW, height: barH, rx: 4,
-        fill: "color-mix(in oklab, var(--pink) 55%, white)", class: "volume-bar",
-      }));
-
-      const totalLabel = makeEl("text", {
-        x: cx, y: barY - 8, "text-anchor": "middle", "font-size": 11, "font-weight": 700, fill: "var(--foreground)",
-      });
-      totalLabel.textContent = total;
-      svg.appendChild(totalLabel);
-
-      const weekLabel = makeEl("text", { x: cx, y: height - 8, "text-anchor": "middle", "font-size": 9, fill: "var(--muted)" });
-      weekLabel.textContent = formatDate(w.weekStarting);
-      svg.appendChild(weekLabel);
-    });
-
-    // Inbox breakdown lines, each with per-point labels and an end-of-line tag.
-    series.forEach((s) => {
-      const points = WEEKS.map((w, i) => `${xFor(i)},${yFor(w[s.key])}`).join(" ");
-      svg.appendChild(makeEl("polyline", {
-        points, fill: "none", stroke: s.color, "stroke-width": 2,
-        "stroke-linecap": "round", "stroke-linejoin": "round",
-      }));
-
-      WEEKS.forEach((w, i) => {
-        const cx = xFor(i);
-        const cy = yFor(w[s.key]);
-        svg.appendChild(makeEl("circle", { cx, cy, r: 3.5, fill: s.color }));
-        const label = makeEl("text", {
-          x: cx, y: cy - 8, "text-anchor": "middle", "font-size": 9, "font-weight": 600, fill: s.color,
-          class: "volume-bar-label",
-        });
-        label.textContent = w[s.key];
-        svg.appendChild(label);
-      });
-
-      const lastIdx = WEEKS.length - 1;
-      const endX = xFor(lastIdx);
-      const endY = yFor(WEEKS[lastIdx][s.key]);
-      const endLabel = makeEl("text", {
-        x: endX + 14, y: endY + 4, "text-anchor": "start", "font-size": 11, "font-weight": 700, fill: s.color,
-      });
-      endLabel.textContent = `${s.label} ${WEEKS[lastIdx][s.key]}`;
-      svg.appendChild(endLabel);
-    });
-  })();
 
   // ── Single-line percentage trend chart (used for CSAT and Retention) ──
   // Y-axis auto-scales to the data's own range (with headroom) instead of a
@@ -747,7 +598,7 @@
       const y = padding.top + chartH - ((t - min) / (max - min)) * chartH;
       yTickPositions.push(y);
       svg.appendChild(makeEl("line", { x1: padding.left, x2: width - padding.right, y1: y, y2: y, stroke: "var(--border-subtle)", "stroke-width": 1 }));
-      const text = makeEl("text", { x: padding.left - 8, y: y + 3, "text-anchor": "end", "font-size": 9, fill: "var(--muted)" });
+      const text = makeEl("text", { x: padding.left - 8, y: y + 3, "text-anchor": "end", "font-size": 8, fill: "var(--muted)" });
       text.textContent = t;
       svg.appendChild(text);
     });
@@ -767,7 +618,7 @@
       const collides = yTickPositions.some((ty) => Math.abs(ty - labelY) < 9);
       if (collides) labelY += dy > 0 ? 13 : -13;
       const label = makeEl("text", {
-        x, y: labelY, "text-anchor": "middle", "font-size": 11, fill: color,
+        x, y: labelY, "text-anchor": "middle", "font-size": 9, fill: color,
         class: "volume-bar-label",
       });
       label.textContent = value + "%";
@@ -777,10 +628,10 @@
     WEEKS.forEach((w, i) => {
       const [cx, cy] = toXY(w[valueKey], i);
 
-      svg.appendChild(makeEl("circle", { cx, cy, r: 5, fill: color, class: "volume-bar" }));
+      svg.appendChild(makeEl("circle", { cx, cy, r: 4, fill: color, class: "volume-bar" }));
       addValueLabel(cx, cy, w[valueKey]);
 
-      const label = makeEl("text", { x: padding.left + i * stepX, y: height - 8, "text-anchor": "middle", "font-size": 9, fill: "var(--muted)" });
+      const label = makeEl("text", { x: padding.left + i * stepX, y: height - 8, "text-anchor": "middle", "font-size": 8, fill: "var(--muted)" });
       label.textContent = formatDate(w.weekStarting);
       svg.appendChild(label);
     });
@@ -788,7 +639,7 @@
     const lastIdx = WEEKS.length - 1;
     const [endX, endY] = toXY(WEEKS[lastIdx][valueKey], lastIdx);
     const endLabel = makeEl("text", {
-      x: endX + 14, y: endY + 4, "text-anchor": "start", "font-size": 11, "font-weight": 700, fill: color,
+      x: endX + 14, y: endY + 4, "text-anchor": "start", "font-size": 9, "font-weight": 700, fill: color,
     });
     endLabel.textContent = `${seriesLabel} ${WEEKS[lastIdx][valueKey]}%`;
     svg.appendChild(endLabel);
