@@ -102,7 +102,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    padding: 20px;
+    padding: 14px 16px;
   }
 
   .grid {
@@ -127,18 +127,18 @@
   .mt-8 { margin-top: 32px; }
 
   .stat-label {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
-    margin: 0 0 8px;
+    margin: 0 0 6px;
   }
   .stat-value {
-    font-size: 1.9rem;
+    font-size: 1.5rem;
     font-weight: 600;
     letter-spacing: -0.02em;
-    margin: 0 0 8px;
+    margin: 0 0 6px;
     font-variant-numeric: tabular-nums;
   }
   .stat-hint {
@@ -389,7 +389,7 @@
       <div class="card mt-4">
         <p class="chart-title">Volume by inbox</p>
         <p class="chart-subtitle">Weekly conversation volume · total bars · inbox lines · chart window: last 4 weeks</p>
-        <svg id="volume-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+        <svg id="volume-chart" viewBox="0 0 620 180" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
       </div>
     </div>
 
@@ -398,7 +398,7 @@
       <div class="card">
         <p class="chart-title">CSAT trend</p>
         <p class="chart-subtitle">Weekly CSAT · chart window: last 4 weeks</p>
-        <svg id="csat-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+        <svg id="csat-chart" viewBox="0 0 620 180" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
       </div>
     </div>
 
@@ -408,7 +408,7 @@
     <div class="card mt-4">
       <p class="chart-title">Retention trend</p>
       <p class="chart-subtitle">Weekly retention rate · chart window: last 4 weeks</p>
-      <svg id="retention-chart" viewBox="0 0 620 220" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+      <svg id="retention-chart" viewBox="0 0 620 180" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
     </div>
 
     <div class="grid grid-2 mt-4">
@@ -446,7 +446,7 @@
 
     <!-- Trend table -->
     <div class="mt-4">
-      <h3 class="section-title">4-week trend</h3>
+      <h3 class="section-title">4-week trend (newest first)</h3>
       <div class="table-wrap">
         <table>
           <colgroup>
@@ -467,7 +467,7 @@
               <th class="right">CSAT</th>
               <th class="right">Median FRT</th>
               <th class="right">Retention</th>
-              <th>Retained Reasons</th>
+              <th>Cancellation Reasons</th>
               <th>Non-retainable Reasons</th>
             </tr>
           </thead>
@@ -597,9 +597,10 @@
       `Retained ÷ (retained + cancelled). ${trendVerb} from ${PREV.retentionPct}% the prior week — cancelled volume ${cancelledVerb} to ${CURRENT.cancelled} while retained ${retainedVerb} to ${CURRENT.retained}.`;
   })();
 
-  // ── Trend table ──
+  // ── Trend table (newest week first; WEEKS itself stays chronological for the charts) ──
   const tbody = document.getElementById("trend-body");
-  WEEKS.forEach((w) => {
+  const tableWeeks = [...WEEKS].reverse();
+  tableWeeks.forEach((w) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${formatDate(w.weekStarting)}</td>
@@ -608,7 +609,7 @@
       <td class="right">${w.csatPct}%</td>
       <td class="right">${w.medianFrtMin}m</td>
       <td class="right">${w.retentionPct}%</td>
-      <td style="font-size:0.78rem;color:var(--muted);">${w.retainedReasons}</td>
+      <td style="font-size:0.78rem;color:var(--muted);">${w.cancellationReasons || "—"}</td>
       <td style="font-size:0.78rem;color:var(--muted);">${w.nonRetainableReasons}</td>
     `;
     tbody.appendChild(tr);
@@ -627,7 +628,7 @@
   // lines" report style: bars carry the total, lines carry the mix.
   (function drawVolumeChart() {
     const svg = document.getElementById("volume-chart");
-    const width = 620, height = 220;
+    const width = 620, height = 180;
     const padding = { top: 16, right: 128, bottom: 28, left: 36 };
     const chartW = width - padding.left - padding.right;
     const chartH = height - padding.top - padding.bottom;
@@ -654,7 +655,7 @@
       svg.appendChild(text);
     });
 
-    const barW = groupW * 0.46;
+    const barW = groupW * 0.28;
 
     // Total bars (Comms + History & Invoices).
     WEEKS.forEach((w, i) => {
@@ -711,14 +712,27 @@
   })();
 
   // ── Single-line percentage trend chart (used for CSAT and Retention) ──
+  // Y-axis auto-scales to the data's own range (with headroom) instead of a
+  // fixed 0-100 scale, so a tight-clustered metric like CSAT (e.g. 91-98%)
+  // still shows visible movement instead of flattening near the top.
   function drawLineChart(svgId, valueKey, color, seriesLabel) {
     const svg = document.getElementById(svgId);
-    const width = 620, height = 220;
+    const width = 620, height = 180;
     const padding = { top: 16, right: 96, bottom: 28, left: 32 };
     const chartW = width - padding.left - padding.right;
     const chartH = height - padding.top - padding.bottom;
-    const min = 0, max = 100;
     const stepX = chartW / (WEEKS.length - 1);
+
+    const values = WEEKS.map((w) => w[valueKey]);
+    const rawMin = Math.min(...values);
+    const rawMax = Math.max(...values);
+    const span = Math.max(rawMax - rawMin, 8);
+    const headroom = Math.max(span * 0.3, 2);
+    let min = Math.floor((rawMin - headroom) / 5) * 5;
+    let max = Math.ceil((rawMax + headroom) / 5) * 5;
+    min = Math.max(min, 0);
+    max = Math.min(max, 100);
+    if (max - min < 10) max = Math.min(100, min + 10);
 
     function toXY(value, i) {
       const x = padding.left + i * stepX;
@@ -726,9 +740,12 @@
       return [x, y];
     }
 
-    const yTicks = [0, 25, 50, 75, 100];
+    const tickCount = 4;
+    const yTicks = Array.from({ length: tickCount + 1 }, (_, i) => Math.round(min + ((max - min) * i) / tickCount));
+    const yTickPositions = [];
     yTicks.forEach((t) => {
-      const y = padding.top + chartH - (t / 100) * chartH;
+      const y = padding.top + chartH - ((t - min) / (max - min)) * chartH;
+      yTickPositions.push(y);
       svg.appendChild(makeEl("line", { x1: padding.left, x2: width - padding.right, y1: y, y2: y, stroke: "var(--border-subtle)", "stroke-width": 1 }));
       const text = makeEl("text", { x: padding.left - 8, y: y + 3, "text-anchor": "end", "font-size": 9, fill: "var(--muted)" });
       text.textContent = t;
@@ -738,12 +755,19 @@
     const points = WEEKS.map((w, i) => toXY(w[valueKey], i).join(",")).join(" ");
     svg.appendChild(makeEl("polyline", { points, fill: "none", stroke: color, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
 
-    // Always-on value label near a point. Flips below the point if there
-    // isn't enough room above (e.g. CSAT sits near the top).
+    // Always-on value label near a point, offset above/below depending on
+    // room near the chart edges. Nudged further if it would otherwise land
+    // on top of a gridline's axis label (can happen once the axis is
+    // auto-scaled to a tight data range instead of a fixed 0-100).
     function addValueLabel(x, y, value) {
-      const dy = y - padding.top < 20 ? 18 : -10;
+      const nearTop = y - padding.top < chartH * 0.18;
+      const nearBottom = padding.top + chartH - y < chartH * 0.18;
+      let dy = nearTop ? 20 : nearBottom ? -16 : -10;
+      let labelY = y + dy;
+      const collides = yTickPositions.some((ty) => Math.abs(ty - labelY) < 9);
+      if (collides) labelY += dy > 0 ? 13 : -13;
       const label = makeEl("text", {
-        x, y: y + dy, "text-anchor": "middle", "font-size": 11, fill: color,
+        x, y: labelY, "text-anchor": "middle", "font-size": 11, fill: color,
         class: "volume-bar-label",
       });
       label.textContent = value + "%";
