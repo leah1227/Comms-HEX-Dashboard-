@@ -168,7 +168,6 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
-    max-width: 460px;
   }
   .section-row {
     display: flex;
@@ -308,7 +307,8 @@
     padding: 6px 14px;
     font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
 
   svg text { font-family: inherit; }
@@ -388,29 +388,29 @@
       </div>
     </div>
 
-    <div class="card chart-card mt-4">
-      <p class="chart-title">Retention trend</p>
-      <p class="chart-subtitle">Weekly retention rate · chart window: last 4 weeks</p>
-      <svg id="retention-chart" viewBox="0 0 620 190" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
-    </div>
-
-    <div class="section-banner mt-8">Retention outcomes</div>
-    <div class="section-card mt-4">
-      <div class="section-row">
-        <div><div class="label"># of customer's retained</div></div>
-        <span class="pill success" id="ret-retained"></span>
+    <div class="grid grid-2 mt-4">
+      <div class="card chart-card">
+        <p class="chart-title">Retention trend</p>
+        <p class="chart-subtitle">Weekly retention rate · chart window: last 4 weeks</p>
+        <svg id="retention-chart" viewBox="0 0 620 190" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
       </div>
-      <div class="section-row">
-        <div><div class="label"># of cancellation requests</div></div>
-        <span class="pill warning" id="ret-cancelled"></span>
-      </div>
-      <div class="section-row">
-        <div><div class="label"># of Non-retainable</div></div>
-        <span class="pill muted" id="ret-nonretainable"></span>
-      </div>
-      <div class="section-total">
-        <span>Total</span>
-        <span id="ret-total"></span>
+      <div class="section-card">
+        <div class="section-row">
+          <div><div class="label"># of customer's retained</div></div>
+          <span class="pill success" id="ret-retained"></span>
+        </div>
+        <div class="section-row">
+          <div><div class="label"># of cancellation requests</div></div>
+          <span class="pill warning" id="ret-cancelled"></span>
+        </div>
+        <div class="section-row">
+          <div><div class="label"># of Non-retainable</div></div>
+          <span class="pill muted" id="ret-nonretainable"></span>
+        </div>
+        <div class="section-total">
+          <span>Total</span>
+          <span id="ret-total"></span>
+        </div>
       </div>
     </div>
 
@@ -436,8 +436,8 @@
               <th class="right">CSAT</th>
               <th class="right">Median FRT</th>
               <th class="right">Retention</th>
-              <th>Cancellation Reasons</th>
               <th>Retained Reasons</th>
+              <th>Cancellation Reasons</th>
             </tr>
           </thead>
           <tbody id="trend-body"></tbody>
@@ -585,8 +585,8 @@
       <td class="right">${w.csatPct}%</td>
       <td class="right">${formatMinSec(w.medianFrtSec)}</td>
       <td class="right">${w.retentionPct}%</td>
-      <td style="color:var(--muted);line-height:1.6;">${formatReasonsList(w.cancellationReasons)}</td>
       <td style="color:var(--muted);line-height:1.6;">${formatReasonsList(w.retainedReasons, { stripRetainedPrefix: true })}</td>
+      <td style="color:var(--muted);line-height:1.6;">${formatReasonsList(w.cancellationReasons)}</td>
     `;
     tbody.appendChild(tr);
   });
