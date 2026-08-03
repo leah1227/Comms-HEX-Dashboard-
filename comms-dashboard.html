@@ -314,6 +314,31 @@
     text-transform: uppercase;
   }
 
+  .comment-box {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+  .comment-box .comment-heading {
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .comment-box .comment-heading:not(:first-child) {
+    margin-top: 16px;
+  }
+  .comment-box ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .comment-box ul ul {
+    margin-top: 4px;
+  }
+  .comment-box li {
+    margin-bottom: 4px;
+  }
+  .comment-box li:last-child {
+    margin-bottom: 0;
+  }
+
   svg text { font-family: inherit; }
 </style>
 </head>
@@ -449,7 +474,32 @@
 
     <!-- Comments -->
     <div class="section-banner mt-8">Comments</div>
-    <div class="card mt-4" style="min-height:80px;"></div>
+    <div class="card comment-box mt-4">
+      <p class="comment-heading">CSAT</p>
+      <ul>
+        <li>Overall improved, though one low score was unavoidable:</li>
+        <li>4 ratings of ok/bad/terrible:
+          <ul>
+            <li>2x ok: One customer within waiting period wanting to claim; one unhappy about PEC chaser emails (investigation found this wasn't actually happening)</li>
+            <li>1x bad: Customer unhappy chat was closed (snooze process was followed correctly) - customer now happy</li>
+            <li>1x terrible: Chat closed prematurely - fed back to the agent as it affected overall CSAT % and was unavoidable</li>
+          </ul>
+        </li>
+      </ul>
+
+      <p class="comment-heading">PIP</p>
+      <ul>
+        <li>Standardised Pip's language and actioned improvements, reducing improvements from 50+ (as of July 1) to 21 currently. This has helped drive a higher resolution rate and lower escalation %</li>
+      </ul>
+
+      <p class="comment-heading">Cancellations vs Retentions</p>
+      <ul>
+        <li>Retention % has increased from previous week</li>
+        <li>Added a cancellation reason attribute to the cancellation inbox</li>
+        <li>Cancellation process rolled out team-wide so all agents can manage the cancellation inbox</li>
+        <li>End-of-July check-in (process started 26 May): Average of 480 chats per month with 26.2% overall retention rate (191 total retentions - largest driver being free months at 76)</li>
+      </ul>
+    </div>
   </div>
 
 <script>
