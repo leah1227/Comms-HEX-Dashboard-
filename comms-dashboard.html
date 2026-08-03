@@ -453,36 +453,36 @@
   // both inboxes (any chat closed that week with a Retained/Cancellation tag).
   const WEEKS = [
     {
-      weekStarting: "2026-06-29", chatsHandled: 446, cancellationChats: 108, historys: 935, csatPct: 98.0, csatResponses: 51, medianFrtMin: 6.2,
-      pipResolutionPct: 51.7, pipEscalationPct: 23.6,
-      retained: 28, cancelled: 60, nonRetainable: 16, retentionPct: 31.8,
-      retainedReasons: "Retained free month (9), Retained agent explanation (7), Retained delayed cover (5), Retained price freeze (3), Retained cover adjustment (3), Retained payment plan (1)",
+      weekStarting: "2026-07-06", chatsHandled: 478, cancellationChats: 114, historys: 1033, csatPct: 96.1, csatResponses: null, medianFrtMin: 5.3,
+      pipResolutionPct: 52.1, pipEscalationPct: 22.3,
+      retained: 28, cancelled: 61, nonRetainable: 25, retentionPct: 31.5,
+      retainedReasons: "Retained free month (13), Retained agent explanation (6), Retained delayed cover (3), Retained price freeze (3), Retained cover adjustment (2), Retained product (1)",
       cancellationReasons: "",
-      nonRetainableReasons: "No longer have pet (6), Personal situation (4), Didn't mean to sign up (4), Overseas (1), Pet passed away (1)",
+      nonRetainableReasons: "No longer have pet (11), Pet passed away (7), Personal situation (4), Didn't mean to sign up (2), Overseas (1)",
     },
     {
-      weekStarting: "2026-07-06", chatsHandled: 483, cancellationChats: 115, historys: 1042, csatPct: 96.0, csatResponses: 75, medianFrtMin: 6.3,
-      pipResolutionPct: 52.2, pipEscalationPct: 22.8,
-      retained: 30, cancelled: 60, nonRetainable: 25, retentionPct: 33.3,
-      retainedReasons: "Retained free month (10), Retained agent explanation (7), Retained cover adjustment (4), Retained price freeze (4), Retained delayed cover (3), Retained product (2)",
-      cancellationReasons: "",
-      nonRetainableReasons: "No longer have pet (10), Pet passed away (8), Personal situation (4), Didn't mean to sign up (2), Overseas (1)",
+      weekStarting: "2026-07-13", chatsHandled: 613, cancellationChats: 109, historys: 1121, csatPct: 96.5, csatResponses: null, medianFrtMin: 7.8,
+      pipResolutionPct: 50.3, pipEscalationPct: 24.4,
+      retained: 15, cancelled: 72, nonRetainable: 19, retentionPct: 17.2,
+      retainedReasons: "Retained free month (4), Retained agent explanation (4), Retained product (3), Retained price freeze (2), Retained discount (1), Retained delayed cover (1)",
+      cancellationReasons: "Ghosted - Reason Unknown (1), Value: No longer value for money (1)",
+      nonRetainableReasons: "No longer have pet (6), Pet passed away (6), Personal situation (4), Overseas (2), Lost pet (1)",
     },
     {
-      weekStarting: "2026-07-13", chatsHandled: 609, cancellationChats: 106, historys: 1138, csatPct: 94.0, csatResponses: 84, medianFrtMin: 8.4,
-      pipResolutionPct: 50.5, pipEscalationPct: 24.2,
-      retained: 17, cancelled: 69, nonRetainable: 23, retentionPct: 19.8,
-      retainedReasons: "Retained free month (6), Retained agent explanation (4), Retained product (2), Retained price freeze (2), Retained delayed cover (2)",
+      weekStarting: "2026-07-20", chatsHandled: 466, cancellationChats: 88, historys: 1211, csatPct: 91.5, csatResponses: null, medianFrtMin: 4.2,
+      pipResolutionPct: 50.2, pipEscalationPct: 25.8,
+      retained: 14, cancelled: 57, nonRetainable: 11, retentionPct: 19.7,
+      retainedReasons: "Retained free month (6), Retained agent explanation (5), Retained price freeze (3)",
       cancellationReasons: "",
-      nonRetainableReasons: "No longer have pet (7), Pet passed away (7), Personal situation (4), Overseas (4), Lost pet (1)",
+      nonRetainableReasons: "No longer have pet (8), Pet passed away (2), Didn't mean to sign up (1)",
     },
     {
-      weekStarting: "2026-07-20", chatsHandled: 468, cancellationChats: 89, historys: 1203, csatPct: 91.0, csatResponses: 67, medianFrtMin: 5.6,
-      pipResolutionPct: 50.4, pipEscalationPct: 25.4,
-      retained: 18, cancelled: 64, nonRetainable: 12, retentionPct: 22.0,
-      retainedReasons: "Retained free month (7), Retained agent explanation (6), Retained price freeze (3), Retained product (1), Retained discount (1)",
-      cancellationReasons: "",
-      nonRetainableReasons: "No longer have pet (8), Pet passed away (2), Didn't mean to sign up (1), Overseas (1)",
+      weekStarting: "2026-07-27", chatsHandled: 448, cancellationChats: 97, historys: 1172, csatPct: 93.8, csatResponses: null, medianFrtMin: 5.7,
+      pipResolutionPct: 53.6, pipEscalationPct: 21.1,
+      retained: 18, cancelled: 47, nonRetainable: 16, retentionPct: 27.7,
+      retainedReasons: "Retained free month (10), Retained delayed cover (4), Retained product (2), Retained agent explanation (1), Retained cover adjustment (1)",
+      cancellationReasons: "Ghosted - Reason Unknown (6), Value: No longer value for money (5), Cost: Financial Hardship (5), Competitor: Cheaper elsewhere (2), PEC: Covered elsewhere (2), FetchPay - Vet not signed up (1), PEC: Taken too long (1), Price: 18 month month increase (1), Price: 6 month price increase (1)",
+      nonRetainableReasons: "No longer have pet (7), Didn't mean to sign up (4), Personal situation (3), Pet passed away (2)",
     },
   ];
 
@@ -520,7 +520,7 @@
 
   document.getElementById("kpi-csat").textContent = CURRENT.csatPct + "%";
   document.getElementById("kpi-csat-delta").innerHTML = deltaHtml(CURRENT.csatPct, PREV.csatPct, { suffix: "pt" });
-  document.getElementById("kpi-csat-responses").textContent = CURRENT.csatResponses + " responses";
+  document.getElementById("kpi-csat-responses").textContent = CURRENT.csatResponses != null ? CURRENT.csatResponses + " responses" : "";
 
   document.getElementById("kpi-frt").textContent = CURRENT.medianFrtMin + "m";
   document.getElementById("kpi-frt-delta").innerHTML = deltaHtml(CURRENT.medianFrtMin, PREV.medianFrtMin, { suffix: "m", lowerIsBetter: true });
