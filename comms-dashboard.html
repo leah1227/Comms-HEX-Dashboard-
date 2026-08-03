@@ -156,6 +156,12 @@
   .delta.good { color: var(--success); }
   .delta.bad { color: var(--warning); }
 
+  .stat-block + .stat-block {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
   .section-card {
     background: var(--box-bg);
     border: 1px solid var(--border);
@@ -299,7 +305,7 @@
     border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
     border-radius: var(--radius-lg);
-    padding: 8px 14px;
+    padding: 6px 14px;
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: -0.01em;
@@ -314,49 +320,47 @@
     <h1>Weekly Reporting</h1>
     <p class="description" id="header-range">sourced from Intercom conversations</p>
 
-    <!-- KPI row: volume -->
-    <div class="grid grid-3 mt-8">
+    <!-- Comms Inbox -->
+    <div class="section-banner mt-8">Comms Inbox</div>
+    <div class="grid grid-2 mt-4">
       <div class="card">
-        <p class="stat-label">Comms Chats Handled</p>
-        <p class="stat-value" id="kpi-chats"></p>
-        <p class="stat-hint" id="kpi-chats-delta"></p>
+        <div class="stat-block">
+          <p class="stat-label">Comms Chats Handled</p>
+          <p class="stat-value" id="kpi-chats"></p>
+          <p class="stat-hint" id="kpi-chats-delta"></p>
+        </div>
+        <div class="stat-block">
+          <p class="stat-label">Histories Handled</p>
+          <p class="stat-value" id="kpi-historys"></p>
+          <p class="stat-hint" id="kpi-historys-delta"></p>
+        </div>
       </div>
       <div class="card">
-        <p class="stat-label">Histories Handled</p>
-        <p class="stat-value" id="kpi-historys"></p>
-        <p class="stat-hint" id="kpi-historys-delta"></p>
-      </div>
-      <div class="card">
-        <p class="stat-label">Cancellation Chats Handled</p>
-        <p class="stat-value" id="kpi-cancellation-chats"></p>
-        <p class="stat-hint" id="kpi-cancellation-chats-delta"></p>
-      </div>
-    </div>
-
-    <!-- KPI row: quality & retention -->
-    <div class="grid grid-3 mt-4">
-      <div class="card">
-        <p class="stat-label">CSAT</p>
-        <p class="stat-value" id="kpi-csat"></p>
-        <p class="stat-hint flex-between">
-          <span id="kpi-csat-delta"></span>
-          <span id="kpi-csat-responses" style="color:var(--muted)"></span>
-        </p>
-      </div>
-      <div class="card">
-        <p class="stat-label">Median FRT</p>
-        <p class="stat-value" id="kpi-frt"></p>
-        <p class="stat-hint" id="kpi-frt-delta"></p>
-      </div>
-      <div class="card">
-        <p class="stat-label">Retention</p>
-        <p class="stat-value" id="kpi-retention"></p>
-        <p class="stat-hint" id="kpi-retention-delta"></p>
+        <div class="stat-block">
+          <p class="stat-label">Median FRT</p>
+          <p class="stat-value" id="kpi-frt"></p>
+          <p class="stat-hint" id="kpi-frt-delta"></p>
+        </div>
+        <div class="stat-block">
+          <p class="stat-label">CSAT</p>
+          <p class="stat-value" id="kpi-csat"></p>
+          <p class="stat-hint flex-between">
+            <span id="kpi-csat-delta"></span>
+            <span id="kpi-csat-responses" style="color:var(--muted)"></span>
+          </p>
+        </div>
       </div>
     </div>
 
-    <!-- KPI row: PIP -->
-    <div class="grid grid-3 mt-4">
+    <div class="card chart-card mt-4">
+      <p class="chart-title">CSAT trend</p>
+      <p class="chart-subtitle">Weekly CSAT · chart window: last 4 weeks</p>
+      <svg id="csat-chart" viewBox="0 0 620 128" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+    </div>
+
+    <!-- PIP -->
+    <div class="section-banner mt-8">PIP</div>
+    <div class="grid grid-2 mt-4">
       <div class="card">
         <p class="stat-label">PIP Resolution %</p>
         <p class="stat-value" id="kpi-pip-resolution"></p>
@@ -369,15 +373,20 @@
       </div>
     </div>
 
-    <!-- CSAT trend -->
-    <div class="section-banner mt-8">CSAT Trend</div>
-    <div class="card chart-card mt-4">
-      <p class="chart-subtitle">Weekly CSAT · chart window: last 4 weeks</p>
-      <svg id="csat-chart" viewBox="0 0 620 128" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
+    <!-- Cancellations and retention -->
+    <div class="section-banner mt-8">Cancellations and retention</div>
+    <div class="grid grid-2 mt-4">
+      <div class="card">
+        <p class="stat-label">Cancellation Chats Handled</p>
+        <p class="stat-value" id="kpi-cancellation-chats"></p>
+        <p class="stat-hint" id="kpi-cancellation-chats-delta"></p>
+      </div>
+      <div class="card">
+        <p class="stat-label">Retention</p>
+        <p class="stat-value" id="kpi-retention"></p>
+        <p class="stat-hint" id="kpi-retention-delta"></p>
+      </div>
     </div>
-
-    <!-- Cancellations & Retentions -->
-    <div class="section-banner mt-8">Cancellations &amp; Retentions</div>
 
     <div class="card chart-card mt-4">
       <p class="chart-title">Retention trend</p>
@@ -406,7 +415,7 @@
     </div>
 
     <!-- Trend table -->
-    <div class="section-banner mt-8">4-week trend (newest first)</div>
+    <div class="section-banner mt-8">4-week trend</div>
     <div class="table-wrap mt-4">
         <table>
           <colgroup>
@@ -434,6 +443,10 @@
           <tbody id="trend-body"></tbody>
         </table>
     </div>
+
+    <!-- Comments -->
+    <div class="section-banner mt-8">Comments</div>
+    <div class="card mt-4" style="min-height:80px;"></div>
   </div>
 
 <script>
@@ -503,6 +516,28 @@
     return `${m}:${String(s).padStart(2, "0")}`;
   }
 
+  // Turns a raw "Label (N), Label2 (M), ..." string into a "Nx Label" list,
+  // one reason per line (joined with <br>). For retained reasons, the
+  // "Retained " prefix is stripped and the remainder is title-cased
+  // (e.g. "Retained free month (13)" -> "13x Free Month").
+  function formatReasonsList(raw, { stripRetainedPrefix = false } = {}) {
+    if (!raw) return "—";
+    return raw
+      .split(/,\s*/)
+      .map((entry) => {
+        const m = entry.match(/^(.*)\s\((\d+)\)$/);
+        if (!m) return null;
+        let label = m[1].trim();
+        if (stripRetainedPrefix) {
+          label = label.replace(/^Retained\s+/i, "");
+          label = label.replace(/\S+/g, (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+        }
+        return `${m[2]}x ${label}`;
+      })
+      .filter(Boolean)
+      .join("<br>");
+  }
+
   // ── KPI row ──
   document.getElementById("header-range").textContent =
     `Week of ${formatDate(CURRENT.weekStarting)} – ${formatDate(CURRENT.weekStarting, 6)}, 2026 · sourced from Intercom conversations`;
@@ -550,8 +585,8 @@
       <td class="right">${w.csatPct}%</td>
       <td class="right">${formatMinSec(w.medianFrtSec)}</td>
       <td class="right">${w.retentionPct}%</td>
-      <td style="font-size:0.7rem;color:var(--muted);">${w.cancellationReasons || "—"}</td>
-      <td style="font-size:0.7rem;color:var(--muted);">${w.retainedReasons}</td>
+      <td style="color:var(--muted);line-height:1.6;">${formatReasonsList(w.cancellationReasons)}</td>
+      <td style="color:var(--muted);line-height:1.6;">${formatReasonsList(w.retainedReasons, { stripRetainedPrefix: true })}</td>
     `;
     tbody.appendChild(tr);
   });
