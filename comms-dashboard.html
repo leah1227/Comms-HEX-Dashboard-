@@ -370,19 +370,29 @@
           <svg id="csat-chart" viewBox="0 0 620 190" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
         </div>
       </div>
-      <div class="card">
-        <div class="stat-block">
-          <p class="stat-label">Median FRT</p>
-          <p class="stat-value" id="kpi-frt"></p>
-          <p class="stat-hint" id="kpi-frt-delta"></p>
+      <div>
+        <div class="card">
+          <div class="stat-block">
+            <p class="stat-label">Median FRT</p>
+            <p class="stat-value" id="kpi-frt"></p>
+            <p class="stat-hint" id="kpi-frt-delta"></p>
+          </div>
+          <div class="stat-block">
+            <p class="stat-label">CSAT</p>
+            <p class="stat-value" id="kpi-csat"></p>
+            <p class="stat-hint flex-between">
+              <span id="kpi-csat-delta"></span>
+              <span id="kpi-csat-responses" style="color:var(--muted)"></span>
+            </p>
+          </div>
         </div>
-        <div class="stat-block">
-          <p class="stat-label">CSAT</p>
-          <p class="stat-value" id="kpi-csat"></p>
-          <p class="stat-hint flex-between">
-            <span id="kpi-csat-delta"></span>
-            <span id="kpi-csat-responses" style="color:var(--muted)"></span>
-          </p>
+        <div class="card comment-box mt-4">
+          <p class="comment-heading">In Other Comms News...</p>
+          <ul>
+            <li>Admin Team comms training scheduled this week to support Comms on the weekend.</li>
+            <li>Pip back-office tickets are now live, so Ops can log Pip improvements.</li>
+            <li>Comms macro overhaul is underway.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -400,6 +410,17 @@
         <p class="stat-value" id="kpi-pip-escalation"></p>
         <p class="stat-hint" id="kpi-pip-escalation-delta"></p>
       </div>
+    </div>
+
+    <div class="card comment-box mt-4">
+      <ul>
+        <li>Live this week:
+          <ul>
+            <li>Pip is now handling support queries that come in over email.</li>
+            <li>Pip's guidance has been updated to include AP attributes: plan status, plan start date, cover, and excess. We're setting up monitors to track performance and expect this to lift resolution %.</li>
+          </ul>
+        </li>
+      </ul>
     </div>
 
     <!-- Cancellations and retention -->
@@ -443,6 +464,22 @@
       </div>
     </div>
 
+    <div class="card comment-box mt-4">
+      <p class="comment-heading">Retention - Aug MTD</p>
+      <ul>
+        <li>Retention rate (of retainable conversations): 17 of 60 retainable = 28%</li>
+        <li>Main Driver: Free Month</li>
+      </ul>
+
+      <p class="comment-heading">Cancellations - Aug MTD</p>
+      <ul>
+        <li>Of all resolved cancellations: 46 of 94 cancelled = 49%</li>
+        <li>Cost/Price is still the #1 driver at 30%.</li>
+        <li>Competitor cover &amp; offers sits at #2 at 23%. These point to customers finding cover and offers elsewhere.</li>
+        <li>Cover gaps make up 16%: routine care (4) and PEC covered elsewhere (3). Customers want routine/dental and PECs included, and are switching to competitors who offer this.</li>
+      </ul>
+    </div>
+
     <!-- Trend table -->
     <div class="section-banner mt-8">4-week trend</div>
     <div class="table-wrap mt-4">
@@ -467,16 +504,6 @@
           </thead>
           <tbody id="trend-body"></tbody>
         </table>
-    </div>
-
-    <!-- Comments -->
-    <div class="section-banner mt-8">Other Comms News</div>
-    <div class="card comment-box mt-4">
-      <ul>
-        <li>Admin Team comms training scheduled this week to support Comms on the weekend.</li>
-        <li>Pip back-office tickets are now live, so Ops can log Pip improvements.</li>
-        <li>Comms macro overhaul is underway.</li>
-      </ul>
     </div>
   </div>
 
