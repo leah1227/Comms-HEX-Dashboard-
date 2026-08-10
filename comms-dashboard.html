@@ -53,10 +53,10 @@
     --radius-full: 9999px;
     --shadow-sm: 0 1px 2px rgba(5, 5, 5, 0.05), 0 1px 0 rgba(5, 5, 5, 0.02);
 
-    --page-bg: color-mix(in oklab, var(--pink-soft) 22%, var(--neutral-100));
+    --page-bg: var(--neutral-0);
     --box-bg: var(--neutral-0);
     --box-bg-strong: var(--neutral-0);
-    --chart-line: #a7a7ad;
+    --chart-line: var(--pink-soft);
   }
 
   * { box-sizing: border-box; }
@@ -447,13 +447,12 @@
     <div class="table-wrap mt-4">
         <table>
           <colgroup>
-            <col style="width:10%">
-            <col style="width:10%">
-            <col style="width:11%">
-            <col style="width:8%">
-            <col style="width:10%">
-            <col style="width:13%">
-            <col style="width:38%">
+            <col style="width:16%">
+            <col style="width:16%">
+            <col style="width:17%">
+            <col style="width:12%">
+            <col style="width:16%">
+            <col style="width:23%">
           </colgroup>
           <thead>
             <tr>
@@ -463,7 +462,6 @@
               <th class="right">CSAT</th>
               <th class="right">Median FRT</th>
               <th class="right">Retention</th>
-              <th>Retained Reasons</th>
             </tr>
           </thead>
           <tbody id="trend-body"></tbody>
@@ -473,24 +471,28 @@
     <!-- Comments -->
     <div class="section-banner mt-8">Comments</div>
     <div class="card comment-box mt-4">
-      <p class="comment-heading">PIP</p>
+      <p class="comment-heading">Pip</p>
       <ul>
-        <li>Going live this week:
+        <li>Live this week:
           <ul>
-            <li>Pip over email – Pip will jump in to help with support queries.</li>
-            <li>Guidance updated with AP attributes such as plan status, plan start date, cover &amp; excess. Setting up monitors to track and expect an increase in resolution %.</li>
+            <li>Pip is now handling support queries that come in over email.</li>
+            <li>Pip's guidance has been updated to include AP attributes: plan status, plan start date, cover, and excess. We're setting up monitors to track performance and expect this to lift resolution %.</li>
           </ul>
         </li>
       </ul>
 
-      <p class="comment-heading">Cancellations vs Retention</p>
+      <p class="comment-heading">Cancellations Summary - Aug MTD</p>
       <ul>
-        <li>Cost / Price (too high + hardship + 18-month): 9x (29%)</li>
-        <li>Competitor (cover + cheaper + NB quote + free months): 8x (26%)</li>
-        <li>Cover gaps (routine care + PEC): 5x (16%)</li>
-        <li>Value (no longer + prev. provider): 4x (13%)</li>
-        <li>Accidental sign-up: 3x (10%)</li>
-        <li>Ghosted: 2x (6%)</li>
+        <li>Cost/Price is still the #1 driver at 30%. These are mostly price-sensitive customers, where excess adjustments or free months aren't cutting it.</li>
+        <li>Competitor offers sits at #2, 23%. Worth noting: "Competitor – Free months" and "Competitor – Cover" (3 cases) point to customers finding cover and offers elsewhere.</li>
+        <li>Cover gaps make up 16%: routine care (4) and PEC covered elsewhere (3). Customers want routine/dental and PECs included, and are switching to competitors who offer this.</li>
+      </ul>
+
+      <p class="comment-heading">Other Comms News</p>
+      <ul>
+        <li>Admin Team comms training scheduled this week to support Comms on the weekend.</li>
+        <li>Pip back-office tickets are now live, so Ops can log Pip improvements.</li>
+        <li>Comms macro overhaul is underway.</li>
       </ul>
     </div>
   </div>
@@ -631,7 +633,6 @@
       <td class="right">${w.csatPct}%</td>
       <td class="right">${formatMinSec(w.medianFrtSec)}</td>
       <td class="right">${w.retentionPct}%</td>
-      <td style="color:var(--muted);line-height:1.6;">${formatReasonsList(w.retainedReasons, { stripRetainedPrefix: true })}</td>
     `;
     tbody.appendChild(tr);
   });
