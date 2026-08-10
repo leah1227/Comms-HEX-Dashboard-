@@ -257,9 +257,6 @@
     background: var(--surface);
     max-width: 620px;
   }
-  .chart-card-wide {
-    max-width: none;
-  }
 
   .volume-bar { }
   .volume-bar-label { pointer-events: none; font-weight: 600; }
@@ -354,16 +351,23 @@
     <!-- Comms Inbox -->
     <div class="section-banner mt-8">Comms Inbox</div>
     <div class="grid grid-2 mt-4">
-      <div class="card">
-        <div class="stat-block">
-          <p class="stat-label">Comms Chats Handled</p>
-          <p class="stat-value" id="kpi-chats"></p>
-          <p class="stat-hint" id="kpi-chats-delta"></p>
+      <div>
+        <div class="card">
+          <div class="stat-block">
+            <p class="stat-label">Comms Chats Handled</p>
+            <p class="stat-value" id="kpi-chats"></p>
+            <p class="stat-hint" id="kpi-chats-delta"></p>
+          </div>
+          <div class="stat-block">
+            <p class="stat-label">Histories Handled</p>
+            <p class="stat-value" id="kpi-historys"></p>
+            <p class="stat-hint" id="kpi-historys-delta"></p>
+          </div>
         </div>
-        <div class="stat-block">
-          <p class="stat-label">Histories Handled</p>
-          <p class="stat-value" id="kpi-historys"></p>
-          <p class="stat-hint" id="kpi-historys-delta"></p>
+        <div class="card chart-card mt-4">
+          <p class="chart-title">CSAT trend</p>
+          <p class="chart-subtitle">Weekly CSAT · chart window: last 4 weeks</p>
+          <svg id="csat-chart" viewBox="0 0 620 190" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
         </div>
       </div>
       <div class="card">
@@ -383,12 +387,6 @@
       </div>
     </div>
 
-    <div class="card chart-card chart-card-wide mt-4">
-      <p class="chart-title">CSAT trend</p>
-      <p class="chart-subtitle">Weekly CSAT · chart window: last 4 weeks</p>
-      <svg id="csat-chart" viewBox="0 0 620 190" style="width:100%;height:auto;display:block;margin:0 auto;"></svg>
-    </div>
-
     <!-- PIP -->
     <div class="section-banner mt-8">PIP</div>
     <div class="grid grid-2 mt-4">
@@ -402,18 +400,6 @@
         <p class="stat-value" id="kpi-pip-escalation"></p>
         <p class="stat-hint" id="kpi-pip-escalation-delta"></p>
       </div>
-    </div>
-
-    <div class="section-banner mt-8">Pip Comments</div>
-    <div class="card comment-box mt-4">
-      <ul>
-        <li>Live this week:
-          <ul>
-            <li>Pip is now handling support queries that come in over email.</li>
-            <li>Pip's guidance has been updated to include AP attributes: plan status, plan start date, cover, and excess. We're setting up monitors to track performance and expect this to lift resolution %.</li>
-          </ul>
-        </li>
-      </ul>
     </div>
 
     <!-- Cancellations and retention -->
@@ -455,22 +441,6 @@
           <span id="ret-total"></span>
         </div>
       </div>
-    </div>
-
-    <div class="section-banner mt-8">Cancellations &amp; Retentions Comments</div>
-    <div class="card comment-box mt-4">
-      <p class="comment-heading">Retention - Aug MTD</p>
-      <ul>
-        <li>Retention rate (of retainable conversations): 17 of 60 retainable = 28%</li>
-        <li>Main Driver: Free Month</li>
-      </ul>
-
-      <p class="comment-heading">Cancellations Summary - Aug MTD</p>
-      <ul>
-        <li>Cost/Price is still the #1 driver at 30%.</li>
-        <li>Competitor cover &amp; offers sits at #2 at 23%. These point to customers finding cover and offers elsewhere.</li>
-        <li>Cover gaps make up 16%: routine care (4) and PEC covered elsewhere (3). Customers want routine/dental and PECs included, and are switching to competitors who offer this.</li>
-      </ul>
     </div>
 
     <!-- Trend table -->
